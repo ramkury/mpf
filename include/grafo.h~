@@ -1,3 +1,6 @@
+#ifndef HGRAFO
+#define HGRAFO
+
 #include <cstdlib>
 #include <cstdio>
 #include <cstring>
@@ -5,7 +8,7 @@
 /** Enumerations de retorno **/
    enum TS_fCondRet {
         TS_CondRetOk,
-	    TS_CondRetErro};
+        TS_CondRetErro};
 
 /** Typedefs elementos **/
 
@@ -66,7 +69,7 @@
    
 //campo executado: será atualizado para o tempo fornecido pelo usuario ou fica fixo com o valor lido do txt?
    
-/* remore as tarefas - apenas se elas não forem pre-requisito de outras tarefas */
+/* remove as tarefas - apenas se elas não forem pre-requisito de outras tarefas */
    void      ExcluirTarefa(pGrafo, unsigned int);
    
 /* funções de edição de tarefa */
@@ -77,7 +80,6 @@
    void      EditarInicMin(pGrafo, unsigned int, int);
    
 /* calcula o menor tempo para execução da tarefa */
-   void      CalcularTempMinExec(pGrafo, unsigned int);
+   int         CalcularTempMinExec(pGrafo, unsigned int);
 
-/* retona ponteiro para o primeiro elemento de uma lista com os IDs das tarefas já completadas */
-   pListaId  TarefasCompletadas(pGrafo, int);
+#endif
