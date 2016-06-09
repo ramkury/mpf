@@ -33,90 +33,201 @@
 
    }
 
-   void      ED_GravarGrafo(pGrafo pCabeca, FILE *arq){
+   void      ED_GravarGrafo(pGrafo pCabeca, FILE * arq){
 
    }
 
-   void      ED_DesalocarGrafo(pGrafo pCabeca, FILE *arq){
+   void      ED_DesalocarGrafo(pGrafo pCabeca, FILE * arq){
+
+      ED_GravarGrafo(pCabeca, arq);
+      ED_DestruirGrafo(pCabeca);
 
    }
 
    void      ED_DestruirGrafo(pGrafo pCabeca){
 
-   }
+      if(pCabeca->org != NULL){
+         ED_DestruirTarefas(pCabeca->org);
+      }
 
-   void      ED_DesalocarTarefa(*tpElementoGrafo){
-
-   }
-
-   void      ED_DesalocarReq(*tpElementoReq){
+      free(pCabeca);
 
    }
-  
-           /////////////////////////////////////////////////////////////////////
-          //                                                                 //
-         //                                                                 //
-        //       Pode passar como parâmetro um ponteiro para uma           //
-       //        tarefa específica, ou como a ED tem cabeça o             //
-      //        único parâmetro válido é a cabeça do grafo?              //
-     //                                                                 //
-    //       Passar o ponteiro da tarefa específico evita              //
-   //     outra passagem por todos elementos na busca via id          //
-  //                                                                 //
- //                                                                 //
-/////////////////////////////////////////////////////////////////////
 
-   void      ED_CriarRequisito(pGrafo pCabeca, *tpElementoGrafo pTarefa, unsigned int idReq){
+   void      ED_DestruirTarefas(tpElementoGrafo * pTarefa){
 
-      tpElementoReq *pReq = (*tpElementoReq)malloc(sizeof(tpElementoReq));
-      pReq->id = idReq;
+      if(pTarefa->lstPreReq != NULL){
+         ED_DestruirReq(pTarefa->lstPreReq);
+      }
+
+      if(pTarefa->prox != NULL){
+         ED_DestruirTarefas(pTarefa->prox);
+      }
+
+      free(pTarefa);
+
+   }
+
+   void      ED_DestruirReq(tpElementoReq * pReq){
+
+      if(pReq->prox != NULL){
+         ED_DestruirReq(pReq->prox);
+      }
+
+      free(pReq);
+
+   }
+
+   void      ED_CriarRequisito(tpElementoGrafo * pTarefa, unsigned int idReq){
+
+      tpElementoReq *pReq = (tpElementoReq *)malloc(sizeof(tpElementoReq));
+      pReq->id            = idReq;
+
       if(pTarefa->lstPreReq != NULL){
          pReq->prox = pTarefa->lstPreReq;
       }
+
       pTarefa->lstPreReq = pReq;
 
    }
 
-   void      ED_ExcluirRequisito(pGrafo pCabeca, unsigned int, unsigned int){
+   void      ED_ExcluirRequisito(tpElementoGrafo * pTarefa, unsigned int idReq){
+
+      tpElementoReq * pTemp    = pTarefa->lstPreReq;
+      tpElementoReq * pTempAnt = pTarefa->lstPreReq;
+
+      if(pTemp->id == idReq){
+         pTarefa->lstPreReq = pTemp->prox;
+         free(pTemp);
+      }
+
+      while(pTemp != NULL){
+
+         if(pTemp->id == idReq){
+            pTempAnt->prox = pTemp->prox;
+            free(pTemp);
+         }
+
+         pTempAnt = pTemp;
+         pTemp = pTemp->prox;
+      }
 
    }
    
    void      ED_CriarTarefa(pGrafo pCabeca, tpElementoGrafo tarefa){
 
-      tpElementoGrafo *pTarefa = (*tpElementoGrafo)malloc(sizeof(tpElementoGrafo));
-      pTarefa = tarefa;
+      tpElementoGrafo * pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+      pTarefa                   = tarefa;
+
       if(pCabeca->org != NULL){
          pTarefa->prox = pCabeca->org;
       }
+
       pCabeca->org = pTarefa;
 
    }
    
-   bool      ED_EhTarefaSemReq(pGrafo pCabeca, unsigned int){
+   bool      ED_EhTarefaSemReq(tpElementoGrafo * pTarefa){
+
+      if(pTarefa->qtdPreReq == 0){
+         return true;
+      }else{
+         return false;
+      }
 
    }
    
-   void      ED_ExcluirTarefa(pGrafo pCabeca, unsigned int){
+   void      ED_ExcluirTarefa(pGrafo pCabeca, unsigned int idTarefa){
+
+      tpElementoGrafo * pTemp    = pCabeca->org;
+      tpElementoGrafo * pTempAnt = pCabeca->org;
+
+      if(pTemp->id == idTarefa){
+         pCabeca->org = pTemp->prox;
+         free(pTemp);
+      }
+
+      while(pTemp != NULL){
+
+         if(pTemp->id == idTarefa){
+            pTempAnt->prox = pTemp->prox;
+            free(pTemp);
+         }
+
+         pTempAnt = pTemp;
+         pTemp = pTemp->prox;
+      }
 
    }
 
-   void      ED_EditarId(pGrafo pCabeca, unsigned int, unsigned int){
+   void      ED_EditarId(tpElementoGrafo * pTarefa, unsigned int novoId){
+
+      pTarefa->id = novoId;
 
    }
 
-   void      ED_EditarNome(pGrafo pCabeca, unsigned int, char *){
+   void      ED_EditarNome(tpElementoGrafo * pTarefa, char *novoNome){
  
-   }
-
-   void      ED_EditarEstadoExec(pGrafo pCabeca, unsigned int, bool){
+      strcpy(novoNome, pTarefa->szNome);
 
    }
 
-   void      ED_EditarDuracao(pGrafo pCabeca, unsigned int, int){
+   void      ED_EditarEstadoExec(tpElementoGrafo * pTarefa, bool novoEstado){
+
+      pTarefa->executado = novoEstado;
 
    }
 
-   void      ED_EditarInicMin(pGrafo pCabeca, unsigned int, int){
+   void      ED_EditarDuracao(tpElementoGrafo * pTarefa, int novaDuracao){
+
+      pTarefa->tempoDuracao = novaDuracao;
+
+   }
+
+   void      ED_EditarInicMin(tpElementoGrafo * pTarefa, int novoTempoInicMin){
+
+      pTarefa->tempoInicMin = novoTempoInicMin
 
    }
    
+   tpElementoGrafo * ED_EhIdExistente(pGrafo pCabeca, unsigned int id){
+
+      if(pCabeca == NULL){
+         return NULL; // id não existe
+      }
+
+      if(pCabeca->org == NULL){
+         return NULL; // id não existe
+      }
+
+      tpElementoGrafo * pTemp = pCabeca->org;
+
+      while(pTemp != NULL){
+
+         if(pTemp->id == id){
+           return pTemp; // id encontrado
+         }
+
+         pTemp = pTemp->prox;
+      } 
+
+      return NULL; // id não encontrado
+
+   }
+
+   bool ED_EhReqExistente(tpElementoGrafo * pTarefa, unsigned int idReq){
+
+      tpElementoReq * pTemp = pTarefa->lstPreReq;
+
+      while(pTemp != NULL){
+
+         if(pTemp->id == idReq){
+           return true; // id encontrado
+         }
+
+         pTemp = pTemp->prox;
+      }
+
+      return false; // id não encontrado
+
+   }

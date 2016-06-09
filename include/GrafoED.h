@@ -30,7 +30,7 @@
 */
    typedef struct tgElementoReq{
 	   unsigned int id;
-	   struct tgElementoReq *prox;
+	   struct tgElementoReq * prox;
    }tpElementoReq;
 
 /** @typedef struct tgElementoGrafo tpElementoGrafo
@@ -64,15 +64,15 @@
 	   int tempoDuracao;
 	   int tempoInicMin;
 	   int qtdPreReq;
-	   tpElementoReq *lstPreReq;
-	   struct tgElementoGrafo *prox;
+	   tpElementoReq * lstPreReq;
+	   struct tgElementoGrafo * prox;
    }tpElementoGrafo;
 
 /** @typedef struct grafo * pGrafo
 *   @brief Tipo ponteiro para cabeça do grafo.
 */
    typedef struct grafo{
-       tpElementoGrafo *org;
+       tpElementoGrafo * org;
        int tempo;
    }* pGrafo;
 
@@ -106,17 +106,17 @@
 */
    void      ED_DestruirGrafo(pGrafo);
 
-/** @fn void ED_DesalocarTarefa(*tpElementoGrafo)
+/** @fn void ED_DesalocarTarefa(tpElementoGrafo *)
 *   @brief Desaloca o espaço da memória alocado para a tarefa.
-*   @param *toElementoGrafo: ponteiro para a tarefa
+*   @param toElementoGrafo *: ponteiro para a tarefa
 */
-   void      ED_DesalocarTarefa(*tpElementoGrafo);
+   void      ED_DesalocarTarefa(tpElementoGrafo *);
 
-/** @fn void ED_DesalocarReq(*tpElementoReq);
+/** @fn void ED_DesalocarReq(tpElementoReq *);
 *   @brief Desaloca o espaço da memória alocado para o requisito.
-*   @param *tpElementoReq: ponteiro para o requisito
+*   @param tpElementoReq *: ponteiro para o requisito
 */
-   void      ED_DesalocarReq(*tpElementoReq);
+   void      ED_DesalocarReq(tpElementoReq *);
 
 /** @fn void ED_CriarRequisito(pGrafo, unsigned int, unsigned int)
 *   @brief Aloca e preenche com as informações do requisito, já adicionando ao grafo.
@@ -194,5 +194,19 @@
 *   @param int: novo tempo mínimo de espera
 */
    void      ED_EditarInicMin(pGrafo, unsigned int, int);
+
+/** @fn tpElementoGrafo * ED_EhIdValido(pGrafo, unsigned int)
+*   @brief Verifica se o ID existe e retorna o ponteiro para a tarefa, caso não exista retorna NULL.
+*   @param pGrafo: ponteiro para cabeça do grafo
+*   @param unsigned int: id da tarefa
+*/
+   tpElementoGrafo *   ED_EhIdExistente(pGrafo, unsigned int);
+
+/** @fn bool ED_EhReqExistente(tpElementoGrafo *, unsigned int)
+*   @brief Verifica se o id pertence aos pré-requisitos de uma determinada tarefa;
+*   @param tpElementoGrafo *: ponteiro para a tarefa
+*   @param unsigned int: id do requisito
+*/
+   bool ED_EhReqExistente(tpElementoGrafo *, unsigned int);
    
 #endif

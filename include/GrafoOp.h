@@ -105,11 +105,16 @@
 */
    void      OP_ExcluirRequisito(pGrafo, unsigned int, unsigned int);
 
-/** @fn bool OP_EhIdValido(pGrafo, unsigned int)
-*   @brief Verifica se o ID existe.
+/** @fn bool OP_EhGrafoValido(pGrafo)
+*   @brief Verifica se o grafo é válido, função de apoio para as assertivas.
 *   @param pGrafo: ponteiro para cabeça do grafo
-*   @param unsigned int: id da tarefa
 */
-   bool   OP_EhIdExistente(pGrafo, unsigned int);
+    bool   OP_EhGrafoValido(pGrafo);
+
+/** @fn void OP_VerificarReq(pGrafo pCabeca)
+*   @brief Verifica se os pré-requisitos das funções são ids válidos e caso inválidos os exclui.
+*   @param pGrafo: ponteiro para cabeça do grafo
+*/
+   void   OP_VerificarReq(pGrafo);
 
 #endif
