@@ -1,39 +1,54 @@
 #include "GrafoED.h"
-
-/* typedef struct tgElementoReq{
-	   unsigned int id;
-	   struct tgElementoReq *prox;
-   }tpElementoReq;
-*/
-/* typedef struct tgElementoGrafo{
-	   unsigned int id; 
-	   char szNome[100] ;
-	   bool executado;
-	   int tempoDuracao;
-	   int tempoInicMin;
-	   int qtdPreReq;
-	   tpElementoReq *lstPreReq;
-	   struct tgElementoGrafo *prox;
-   }tpElementoGrafo;
-
-  typedef struct grafo{
-       tpElementoGrafo *org;
-       int tempo;
-   }* pGrafo;
-*/
-//   typedef tpElementoReq * pListaId;
  
-/** Funções **/
+/* Funções */
 
    pGrafo    ED_CriarGrafo(){
 
-      pGrafo pCabeca = (pGrafo)calloc(1,sizeof(grafo));
+      pGrafo pCabeca;
+      pCabeca        = (pGrafo)calloc(1,sizeof(grafo));
       pCabeca->tempo = 0;
+
       return pCabeca;
 
    }
 
    void      ED_GravarGrafo(pGrafo pCabeca, FILE * arq){
+
+      tpElementoGrafo * pTarefaTemp;
+      tpElementoGrafo   tarefaTemp;
+      tpElementoReq     pReqTemp;
+
+      pTarefaTemp = pCabeca->org;
+
+      while(pTarefaTemp != NULL){ // varre as tarefas uma a uma escrevendo no arquivo
+
+         tarefaTemp = * pTarefaTemp;
+         pReqTemp   = pTarefaTemp->lstPreReq;
+
+         fprintf(arq, "%u %s ", tarefaTemp->id, tarefaTemp->szNome); // escreve o id e nome
+
+         if(tarefaTemp->executado){ // escreve se foi ou não executado
+            fprintf(arq, "1 ");
+         }else{
+            fprintf(arq, "0 ");
+         }
+         
+         fprintf(arq, "%d %d %d", tarefaTemp->tempoDuracao, tarefaTemp->tempoInicMin, tarefaTemp->qtdPreReq); // escreve duração, inic mín e qtd de pré-req
+
+         if(!ED_EhTarefaSemReq(pTarefaTemp)){ // se tiver pré-requisito
+
+            while(pReqTemp != NULL){ // varre as listas de pré-requisitos
+
+               fprintf(arq, " %d", pReqTemp->id); // escreve os ids dos requisitos
+
+               pReqTemp = pReqTemp->prox;
+            }
+         }
+
+         fprintf(arq, "\n"); // quebra de linha ao final da tarefa
+
+         pTarefaTemp = pTarefaTemp->prox;
+      }
 
    }
 
@@ -80,21 +95,26 @@
 
    void      ED_CriarRequisito(tpElementoGrafo * pTarefa, unsigned int idReq){
 
-      tpElementoReq *pReq = (tpElementoReq *)malloc(sizeof(tpElementoReq));
-      pReq->id            = idReq;
+      tpElementoReq *pReq;
+      pReq     = (tpElementoReq *)malloc(sizeof(tpElementoReq));
+      pReq->id = idReq;
 
       if(pTarefa->lstPreReq != NULL){
          pReq->prox = pTarefa->lstPreReq;
       }
 
       pTarefa->lstPreReq = pReq;
+      pTarefa->qtdPreReq = (pTarefa->qtdPreReq + 1);
 
    }
 
    void      ED_ExcluirRequisito(tpElementoGrafo * pTarefa, unsigned int idReq){
 
-      tpElementoReq * pTemp    = pTarefa->lstPreReq;
-      tpElementoReq * pTempAnt = pTarefa->lstPreReq;
+      tpElementoReq * pTemp;
+      tpElementoReq * pTempAnt;
+
+      pTemp    = pTarefa->lstPreReq;
+      pTempAnt = pTarefa->lstPreReq;
 
       if(pTemp->id == idReq){
          pTarefa->lstPreReq = pTemp->prox;
@@ -112,12 +132,11 @@
          pTemp = pTemp->prox;
       }
 
+      pTarefa->qtdPreReq = (pTarefa->qtdPreReq -1);
+
    }
    
-   void      ED_CriarTarefa(pGrafo pCabeca, tpElementoGrafo tarefa){
-
-      tpElementoGrafo * pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
-      pTarefa                   = tarefa;
+   void      ED_CriarTarefa(pGrafo pCabeca, tpElementoGrafo * pTarefa){
 
       if(pCabeca->org != NULL){
          pTarefa->prox = pCabeca->org;
@@ -139,8 +158,10 @@
    
    void      ED_ExcluirTarefa(pGrafo pCabeca, unsigned int idTarefa){
 
-      tpElementoGrafo * pTemp    = pCabeca->org;
-      tpElementoGrafo * pTempAnt = pCabeca->org;
+      tpElementoGrafo * pTemp;
+      tpElementoGrafo * pTempAnt;
+      pTemp    = pCabeca->org;
+      pTempAnt = pCabeca->org;
 
       if(pTemp->id == idTarefa){
          pCabeca->org = pTemp->prox;
@@ -155,7 +176,7 @@
          }
 
          pTempAnt = pTemp;
-         pTemp = pTemp->prox;
+         pTemp    = pTemp->prox;
       }
 
    }
@@ -200,7 +221,8 @@
          return NULL; // id não existe
       }
 
-      tpElementoGrafo * pTemp = pCabeca->org;
+      tpElementoGrafo * pTemp;
+      pTemp = pCabeca->org;
 
       while(pTemp != NULL){
 
@@ -217,7 +239,8 @@
 
    bool ED_EhReqExistente(tpElementoGrafo * pTarefa, unsigned int idReq){
 
-      tpElementoReq * pTemp = pTarefa->lstPreReq;
+      tpElementoReq * pTemp;
+      pTemp = pTarefa->lstPreReq;
 
       while(pTemp != NULL){
 
@@ -229,5 +252,62 @@
       }
 
       return false; // id não encontrado
+
+   }
+
+   bool   ED_VerificarOrigem(pGrafo pCabeca){
+
+      tpElementoGrafo * pTarefa;
+      pTarefa = pCabeca->org;
+
+      while(pTarefa != NULL){
+
+         if(ED_EhTarefaSemReq(pTarefa)){
+            return true;
+         }
+
+         pTarefa = pTarefa->prox;
+
+      }
+
+      return false;
+
+   }
+
+   int ED_CalcularTempoMinExec(pGrafo pCabeca, unsigned int idTarefa){
+
+      tpElementoGrafo * pTarefa;
+      pTarefa = ED_EhIdExistente(pCabeca);
+
+      if(pTarefa->executado){
+         return 0;
+      }
+
+      if(pTarefa->qtdPreReq == 0){
+         return (pTarefa->tempoInicMin + pTarefa->tempoDuracao);
+      }
+
+      tpElementoReq * pReqTemp;
+      int tempo;
+      pReqTemp = pTarefa->lstPreReq;
+      tempo    = 0;
+
+      while(pReqTemp != NULL){
+
+         tempo = tempo + ED_CalcularTempoMinExec(pCabeca, pReqTemp->id);
+         pReqTemp = pReqTemp->prox;
+
+      }
+
+      return tempo;
+
+   }
+
+   bool ED_TemReqCircular(pGrafo pCabeca){
+
+/*****
+* OLHA AQUI
+*/
+
 
    }
