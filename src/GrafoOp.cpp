@@ -39,6 +39,8 @@
          fscanf(arq, "%d", tempQtdPreReq); // pega a quantidade de requisitos
 
          pTarefa->qtdPreReq = tempQtdPreReq; // passa a quatidade para a tarefa
+         pTarefa->lstPreReq = NULL;
+         pTarefa->prox      = NULL;
 
          if(!OP_EhTarefaValida(pCabeca, pTarefa)){ // assertiva estrutural
             throw //EXCEPTION TAREFA_INVALIDA
@@ -262,7 +264,17 @@
          throw //EXCEPTION ID_REQ_INVALIDO
       }
 
-      tpElementoGrafo *pTarefa = ED_EhIdExistente(idTarefa);
+      tpElementoGrafo *pTarefa;
+      int numTarefas;
+
+      pTarefa    = pCabeca->org;
+      numTarefas = 0;
+
+      while(pTarefa != NULL){ // descobre número de tarefas
+         numTarefas++;
+      }
+
+      pTarefa    = ED_EhIdExistente(idTarefa);
 
       if(pTarefa == NULL){ // assertiva
          throw //EXCEPTION ID_TAREFA_INVALIDO
@@ -270,6 +282,11 @@
 
       ED_CriarRequisito(pTarefa, idReq);
    
+      if(ED_TemCamCircular(pCabeca, pTarefa, numTarefas, 0)){ // assertiva
+         OP_ExcluirRequisito(pCabeca, idTarefa, idReq);
+         throw //EXCEPTION CRIA_CAMINHO_CIRCULAR
+      }
+
    }
    
    void   OP_ExcluirRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
@@ -348,13 +365,14 @@
 
    } // função de apoio para as assertivas estruturais
 
-   bool   OP_VerificarOrigem(pGrafo pCabeca){
+   bool   OP_TemOrigem(pGrafo pCabeca){
 
       if(!OP_EhGrafoValido){ // assertiva
          throw //EXCEPTION GRAFO_INVALIDO
       }
 
-      return ED_VerificarOrigem(pCabeca);
+      return ED_TemOrigem(pCabeca);
+   
    }
 
    bool   OP_TemReqCircular(pGrafo pCabeca){
@@ -363,6 +381,26 @@
          throw //EXCEPTION GRAFO_INVALIDO
       }
 
-      return ED_TemReqCircular(pCabeca);
+      tpElementoGrafo * pTarefaTemp;
+      int numTarefas;
+
+      pTarefaTemp = pCabeca->org;
+      numTarefas  = 0;
+
+      while(pTarefaTemp != NULL){ // descobre número de tarefas
+         numTarefas++;
+      }
+
+      pTarefaTemp = pCabeca->org; // reinicia o ponteiro
+
+      while(pTarefaTemp != NULL){   // varre todas tarefas
+
+         if(ED_TemCamCircular(pCabeca, pTarefa, numTarefas, 0)){
+            return true; // se tiver um caminho circular já mostra a existencia de requisitos circulares
+         }
+
+      }
+
+      return false; // nada foi encontrado
 
    }

@@ -255,7 +255,7 @@
 
    }
 
-   bool   ED_VerificarOrigem(pGrafo pCabeca){
+   bool   ED_TemOrigem(pGrafo pCabeca){
 
       tpElementoGrafo * pTarefa;
       pTarefa = pCabeca->org;
@@ -303,11 +303,27 @@
 
    }
 
-   bool ED_TemReqCircular(pGrafo pCabeca){
+   bool ED_TemCamCircular(pGrafo pCabeca, tpElementoGrafo * pTarefa, int numTarefas, int numChamada){
 
-/*****
-* OLHA AQUI
-*/
+      if(numTarefas < numChamada){ // se chamar a função mais vezes que o número de tarefas existe caminho circular
+         return true;
+      }
 
+      tpElementoReq * pReqTemp;
 
+      if(!ED_EhTarefaSemReq(pTarefa)){ // se a tarefa não é origem
+
+         pReqTemp = pTarefa->lstPreReq;
+         
+         while(pReqTemp != NULL){   // enquanto tiver requisitos
+         
+            if(ED_TemCamCircular(pCabeca, ED_EhIdExistente(pTarefa->lstPreReq->id), numTarefas, numChamada+1)){  // procura caminho circular
+               return true; // se tiver caminho circular, propaga
+            }
+
+            pReqTemp = pReqTemp->prox; // tenta pro próximo requisito
+         }
+      }
+
+      return false; // passou por tudo e retornou sem caminhos, então, eles não existem
    }

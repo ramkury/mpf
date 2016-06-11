@@ -123,4 +123,16 @@
 */
     bool  OP_EhTarefaValida(pGrafo, tpElementoGrafo *);
 
+/** @fn bool OP_TemOrigem(pGrafo)
+*   @brief Verifica se o grafo tem origens, ou seja, verifica a existência de tarefas sem pré-requisitos.
+*   @param ponteiro para cabeça do grafo
+*/
+    bool   OP_TemOrigem(pGrafo);
+
+/** @fn bool OP_TemReqCircular(pGrafo pCabeca)
+*   @brief Verifica se o grafo tem requisitos circulares, ou seja, se uma tarefa é pré-requisito de algum pré-requisito.
+*   @param ponteiro para cabeça do grafo
+*/
+    bool   OP_TemReqCircular(pGrafo);
+
 #endif

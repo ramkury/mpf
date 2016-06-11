@@ -137,7 +137,7 @@
    bool      ED_EhTarefaSemReq(pGrafo, unsigned int);
    
 /** @fn void ED_ExcluirTarefa(pGrafo, unsigned int)
-*   @brief Remove as tarefas do grafo.
+*   @brief Remove uma tarefa do grafo.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa a ser excluida
 */
@@ -186,10 +186,32 @@
    tpElementoGrafo *   ED_EhIdExistente(pGrafo, unsigned int);
 
 /** @fn bool ED_EhReqExistente(tpElementoGrafo *, unsigned int)
-*   @brief Verifica se o id pertence aos pré-requisitos de uma determinada tarefa;
+*   @brief Verifica se o id pertence aos pré-requisitos de uma determinada tarefa.
 *   @param ponteiro para a tarefa
 *   @param id do requisito
 */
    bool ED_EhReqExistente(tpElementoGrafo *, unsigned int);
    
+/** @fn bool ED_TemOrigem(pGrafo)
+*   @brief Verifica se o grafo tem origens (tarefas sem pré requisitos).
+*   @param ponteiro para cabeça do grafo
+*/
+   bool ED_TemOrigem(pGrafo);
+
+/** @fn bool ED_CalcularTempoMinExec(pGrafo, unsigned int)
+*   @brief Calcula o tempo mínimo para a tarefa mudar para o estado de executado.
+*   @param ponteiro para cabeça do grafo
+*   @param id da tarefa
+*/
+   int ED_CalcularTempoMinExec(pGrafo, unsigned int);
+
+/** @fn bool ED_TemCamCircular(pGrafo, tpElementoGrafo *, int, int)
+*   @brief Verifica se existem caminhos circulares para uma tarefa específica.
+*   @param ponteiro para cabeça do grafo
+*   @param ponteiro para a tarefa
+*   @param numero de tarefas existentes no grafo
+*   @param numero da chamadas a função (controle de chamadas recursivas)
+*/ 
+   bool ED_TemCamCircular(pGrafo, tpElementoGrafo *, int, int);
+
 #endif
