@@ -4,12 +4,12 @@ CXXFLAGS=-I$(IDIR)
 
 ODIR= ./obj
 
-LIBS= -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs
+LIBS= -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
 
-_DEPS = grafo.h
+_DEPS = GrafoED.h GrafoOp.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = grafo.o 
+_OBJ = GrafoED.o GrafoOp.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
