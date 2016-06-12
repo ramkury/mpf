@@ -16,7 +16,7 @@
 
       tpElementoGrafo * pTarefaTemp;
       tpElementoGrafo   tarefaTemp;
-      tpElementoReq     pReqTemp;
+      tpElementoReq   * pReqTemp;
 
       pTarefaTemp = pCabeca->org;
 
@@ -25,15 +25,15 @@
          tarefaTemp = * pTarefaTemp;
          pReqTemp   = pTarefaTemp->lstPreReq;
 
-         fprintf(arq, "%u %s ", tarefaTemp->id, tarefaTemp->szNome); // escreve o id e nome
+         fprintf(arq, "%u %s ", tarefaTemp.id, tarefaTemp.szNome); // escreve o id e nome
 
-         if(tarefaTemp->executado){ // escreve se foi ou não executado
+         if(tarefaTemp.executado){ // escreve se foi ou não executado
             fprintf(arq, "1 ");
          }else{
             fprintf(arq, "0 ");
          }
          
-         fprintf(arq, "%d %d %d", tarefaTemp->tempoDuracao, tarefaTemp->tempoInicMin, tarefaTemp->qtdPreReq); // escreve duração, inic mín e qtd de pré-req
+         fprintf(arq, "%d %d %d", tarefaTemp.tempoDuracao, tarefaTemp.tempoInicMin, tarefaTemp.qtdPreReq); // escreve duração, inic mín e qtd de pré-req
 
          if(!ED_EhTarefaSemReq(pTarefaTemp)){ // se tiver pré-requisito
 
@@ -59,13 +59,13 @@
 
    }
 
-   void      ED_DestruirGrafo(pGrafo pCabeca){
+   void      ED_DestruirReq(tpElementoReq * pReq){
 
-      if(pCabeca->org != NULL){
-         ED_DestruirTarefas(pCabeca->org);
+      if(pReq->prox != NULL){
+         ED_DestruirReq(pReq->prox);
       }
 
-      free(pCabeca);
+      free(pReq);
 
    }
 
@@ -83,13 +83,13 @@
 
    }
 
-   void      ED_DestruirReq(tpElementoReq * pReq){
+   void      ED_DestruirGrafo(pGrafo pCabeca){
 
-      if(pReq->prox != NULL){
-         ED_DestruirReq(pReq->prox);
+      if(pCabeca->org != NULL){
+         ED_DestruirTarefas(pCabeca->org);
       }
 
-      free(pReq);
+      free(pCabeca);
 
    }
 
@@ -207,7 +207,7 @@
 
    void      ED_EditarInicMin(tpElementoGrafo * pTarefa, int novoTempoInicMin){
 
-      pTarefa->tempoInicMin = novoTempoInicMin
+      pTarefa->tempoInicMin = novoTempoInicMin;
 
    }
    
@@ -277,7 +277,7 @@
    int ED_CalcularTempoMinExec(pGrafo pCabeca, unsigned int idTarefa){
 
       tpElementoGrafo * pTarefa;
-      pTarefa = ED_EhIdExistente(pCabeca);
+      pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa->executado){
          return 0;
@@ -317,7 +317,7 @@
          
          while(pReqTemp != NULL){   // enquanto tiver requisitos
          
-            if(ED_TemCamCircular(pCabeca, ED_EhIdExistente(pTarefa->lstPreReq->id), numTarefas, numChamada+1)){  // procura caminho circular
+            if(ED_TemCamCircular(pCabeca, ED_EhIdExistente(pCabeca, pTarefa->lstPreReq->id), numTarefas, numChamada+1)){  // procura caminho circular
                return true; // se tiver caminho circular, propaga
             }
 

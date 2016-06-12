@@ -129,12 +129,11 @@
 */
    void      ED_CriarTarefa(pGrafo, tpElementoGrafo *); 
    
-/** @fn bool ED_EhTarefaSemReq(pGrafo, unsigned int)
+/** @fn bool ED_EhTarefaSemReq(tpElementoGrafo *)
 *   @brief Verifica se a tarefa não tem pre-requisitos.
-*   @param ponteiro para cabeça do grafo
-*   @param id da tarefa
+*   @param ponteiro para a tarefa
 */
-   bool      ED_EhTarefaSemReq(pGrafo, unsigned int);
+   bool      ED_EhTarefaSemReq(tpElementoGrafo *);
    
 /** @fn void ED_ExcluirTarefa(pGrafo, unsigned int)
 *   @brief Remove uma tarefa do grafo.
