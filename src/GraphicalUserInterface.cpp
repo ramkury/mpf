@@ -1,9 +1,15 @@
 #include "GraphicalUserInterface.h"
 #include <ncurses.h>
 
+#define NLINES 30
+#define NCOLS 60
+
 using namespace std;
 
 void UI_InicializaGUI() {
+
+    unsigned int opcaoSelecionada;
+
     initscr();
     start_color();
 
@@ -13,39 +19,54 @@ void UI_InicializaGUI() {
     init_pair(cores_nao_concluido,COLOR_RED,COLOR_WHITE);
     init_pair(cores_concluido,COLOR_GREEN,COLOR_WHITE);
 
+    bkgd(COLOR_PAIR(cores_padrao));
+
     vector<string> itensMenuInicial;
-    itensMenuInicial.push_back("item1");
-    itensMenuInicial.push_back("item2");
-    itensMenuInicial.push_back("item3");
-    itensMenuInicial.push_back("item4");
+    itensMenuInicial.push_back("Ler tarefas de arquivo existente");
+    itensMenuInicial.push_back("Criar novo arquivo de tarefas");
 
-    string titulo("titulo");
+    opcaoSelecionada = UI_SelecionaOpcao("Escolha uma ação:", itensMenuInicial);
 
-    UI_SelecionaOpcao(titulo, itensMenuInicial);
+    char szEntrada[100];
 
+    switch (opcaoSelecionada) {
+        case 0:
+            // Recebe a entrada do usuário com o nome do arquivo a ser aberto
+            UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szEntrada);
+            mvprintw(3, 3, szEntrada);
+            // Le o arquivo com o nome informado pelo usuário
+            // Abre tela de visualização de tarefas
+            break;
+        case 1:
+            // Recebe a entrada do usuário com o nome do arquivo a ser criado
+            UI_LeEntradaTexto("Digite o nome do arquivo a ser criado", szEntrada);
+            // Cria o arquivo com o nome informado pelo usuário
+            // Abre tela de visualização de tarefas
+            break;
+    }
+
+}
+
+void UI_LeEntradaTexto(string titulo, char *szEntrada) {
+    WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
+    getstr(szEntrada);
+    wrefresh(hwndMenu);
+    delwin(hwndMenu);
+}
+
+void UI_FinalizaPrograma() {
+    endwin();
 }
 
 unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
 
-    #define NLINES 30
-    #define NCOLS 60
+    WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
 
     char szTemp[100];
     unsigned int inx, lineOffset = 4;
     int currentInput;
     cbreak(); //desabilita line buffering
     noecho(); //não mostra a tecla digitada pelo usuário na tela
-
-    WINDOW * hwndMenu = newwin(NLINES, NCOLS, 3, 3);
-
-
-    box(hwndMenu, 0, 0); //cria bordas da janela
-    wrefresh(hwndMenu);
-    wbkgd(hwndMenu, COLOR_PAIR(cores_menu));
-
-    wattron(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
-    mvwprintw(hwndMenu, 1, 1, titulo.c_str());
-    wattroff(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
 
     for (inx = 0; inx < itensMenu.size(); ++inx) {
         if (inx == 0) //primeiro item é destacado inicialmente
@@ -81,6 +102,20 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
     delwin(hwndMenu); //apaga a janela criada para mostrar o menu de opções
     return inx; //posição da opção selecionada pelo usuário
 
-    #undef NLINES
-    #undef NCOLS
 }
+
+WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
+    WINDOW * hwndMenu = newwin(NLINES, NCOLS, 3, 3);
+
+    box(hwndMenu, 0, 0); //cria bordas da janela
+    wbkgd(hwndMenu, COLOR_PAIR(colorPair));
+
+    wattron(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
+    mvwprintw(hwndMenu, 1, 1, szTitulo); //imprime o título da janela
+    wattroff(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
+
+    return hwndMenu;
+}
+
+#undef NLINES
+#undef NCOLS

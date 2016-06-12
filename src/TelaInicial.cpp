@@ -13,7 +13,6 @@ int main(void) {
     mvprintw(2, 2, "Programa finalizado.");
     refresh();
     getch();
-
     endwin();
 
     return 0;
