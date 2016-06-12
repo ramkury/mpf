@@ -8,6 +8,30 @@
 *   @sa GrafoED.h
 */
 
+/** @enum TS_Excecao
+*	@brief Enumeration que agrupa as exeções previstas nas assertivas de GrafoOp.h.
+*	@var TS_ExcecaoFlhFopen Reporta falha na função fopen
+*	@var TS_ExcecaoTrfInval Reporta que a tarefa é inválida
+*	@var TS_ExcecaoReqCirc Reporta que um requisito circular foi encontrado
+*	@var TS_ExcecaoGrafoInval Reporta que um grafo inválido foi passado de parâmetro
+*	@var TS_ExcecaoIdJahExiste Reporta que o novo id já existe
+*	@var TS_ExcecaoIdTrfInval Reporta que o Id da tarefa é inválido
+*	@var TS_ExcecaoDurNgtv Reporta que a duração fornecida é negativa
+*	@var TS_ExcecaoTmpNgtv Reporta que o tempo mínimo fornecido é negativo
+*   @var TS_ExcecaoIdReqInval Reporta que o Id do requisito é inválido
+*/
+	enum TS_Execao{
+		TS_ExcecaoFlhFopen;
+		TS_ExcecaoTrfInval;
+		TS_ExcecaoReqCirc;
+		TS_ExcecaoGrafoInval;
+		TS_ExcecaoIdJahExiste;
+		TS_ExcecaoIdTrfInval;
+		TS_ExcecaoDurNgtv;
+		TS_ExcecaoTmpNgtv;
+		TS_ExcecaoIdReqInval;
+	};
+
 /** @fn pGrafo OP_LerGrafo(char *)
 *   @brief A partir de um arquivo .txt gera o grafo do gerenciador.
 *   @param string com o nome do arquivo de onde o arquivo será lido
