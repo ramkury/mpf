@@ -8,7 +8,7 @@
       arq = fopen(szNomeArq, "w");
 
       if(arq == NULL){ //assertiva
-         throw ; //EXCEPTION FALHA_FOPEN_ARQ
+         throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
       }
 
       int tempQtdPreReq;
@@ -41,7 +41,7 @@
          pTarefa->prox      = NULL;
 
          if(!OP_EhTarefaValida(pCabeca, pTarefa)){ // assertiva estrutural
-            throw ; //EXCEPTION TAREFA_INVALIDA
+            throw TS_ExcecaoTrfInval; //EXCEPTION TAREFA_INVALIDA
          }
 
          ED_CriarTarefa(pCabeca, pTarefa);
@@ -58,7 +58,7 @@
 
       OP_VerificarReq(pCabeca);
       if(OP_TemReqCircular(pCabeca)){
-         throw ; //EXCEPTION REQUISITOS_CIRCULARES_GRAFO_INCONSISTENTE
+         throw TS_ExcecaoReqCirc; //EXCEPTION REQUISITOS_CIRCULARES_GRAFO_INCONSISTENTE
       }
 
       return pCabeca;
@@ -70,11 +70,11 @@
       FILE * arq = fopen(szNomeArq, "w");
 
       if(arq == NULL){ //assertiva
-       throw ; //EXCEPTION FALHA_FOPEN_ARQ
+       throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
       }
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       ED_GravarGrafo(pCabeca, arq);
@@ -84,7 +84,7 @@
    void   OP_DeletarGrafo(pGrafo pCabeca){
 
       if(pCabeca == NULL){ //assertiva
-         throw ; //EXCEPTION GRAFO_INEXISTENTE
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INEXISTENTE
       }
 
       ED_DestruirGrafo(pCabeca);
@@ -94,11 +94,11 @@
    int    OP_CalcularTempoMinExec(pGrafo pCabeca, unsigned int idTarefa){
 
       if(!OP_EhGrafoValido){ // assertiva de entrada
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       if(ED_EhIdExistente(pCabeca, idTarefa) == NULL){ // assertiva de entrada
-         throw ; //EXCEPTION TAREFA_INVALIDA
+         throw TS_ExcecaoTrfInval; //EXCEPTION TAREFA_INVALIDA
       }
 
          return ED_CalcularTempoMinExec(pCabeca, idTarefa);
@@ -108,17 +108,17 @@
    void   OP_EditarId(pGrafo pCabeca, unsigned int idTarefa, unsigned int novoIdTarefa){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       if(ED_EhIdExistente(pCabeca, novoIdTarefa) != NULL){
-         throw ; //EXCEPTION ID_JAH_EXISTE
+         throw TS_ExcecaoIdJahExiste; //EXCEPTION ID_JAH_EXISTE
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_EditarId(pTarefa, novoIdTarefa);
@@ -128,13 +128,13 @@
    void   OP_EditarNome(pGrafo pCabeca, unsigned int idTarefa, char * novoNome){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_EditarNome(pTarefa, novoNome);
@@ -144,13 +144,13 @@
    void   OP_EditarEstadoExec(pGrafo pCabeca, unsigned int idTarefa, bool estadoExec){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_EditarEstadoExec(pTarefa, estadoExec);
@@ -160,17 +160,17 @@
    void   OP_EditarDuracao(pGrafo pCabeca, unsigned int idTarefa, int novoTempoDuracao){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       if(novoTempoDuracao < 0){ // assertiva
-         throw ; //EXCEPTION DURACAO_NEGATIVA
+         throw TS_ExcecaoDurNgtv; //EXCEPTION DURACAO_NEGATIVA
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_EditarDuracao(pTarefa, novoTempoDuracao);
@@ -180,17 +180,17 @@
    void   OP_EditarInicMin(pGrafo pCabeca, unsigned int idTarefa, int novoTempoInicMin){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       if(novoTempoInicMin < 0){ // assertiva
-         throw ; //EXCEPTION TEMPO_NEGATIVO
+         throw TS_ExcecaoTmpNgtv; //EXCEPTION TEMPO_NEGATIVO
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-        throw ; //EXCEPTION ID_TAREFA_INVALIDO
+        throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_EditarInicMin(pTarefa, novoTempoInicMin);
@@ -200,13 +200,13 @@
    void   OP_ExcluirTarefa(pGrafo pCabeca, unsigned int idTarefa){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       tpElementoGrafo * pTarefaTemp = pCabeca->org;
@@ -234,7 +234,7 @@
    void   OP_CriarTarefa(pGrafo pCabeca, tpElementoGrafo tarefa){
 
       if(pCabeca == NULL){ //assertiva
-         throw ; //EXCEPTION GRAFO_INEXISTENTE
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INEXISTENTE
       }
 
       tpElementoGrafo * pTarefa;
@@ -245,7 +245,7 @@
       pTarefa->prox      = NULL;
 
       if(!OP_EhTarefaValida(pCabeca, pTarefa)){ //assertiva
-         throw ; //EXEPTION TAREFA_INVALIDA
+         throw TS_ExcecaoTrfInval; //EXEPTION TAREFA_INVALIDA
       }
 
       ED_CriarTarefa(pCabeca, pTarefa);
@@ -255,11 +255,11 @@
    void   OP_CriarRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       if(ED_EhIdExistente(pCabeca, idReq) == NULL){ // assertiva
-         throw ; //EXCEPTION ID_REQ_INVALIDO
+         throw TS_ExcecaoIdReqInval; //EXCEPTION ID_REQ_INVALIDO
       }
 
       tpElementoGrafo *pTarefa;
@@ -275,14 +275,14 @@
       pTarefa    = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       ED_CriarRequisito(pTarefa, idReq);
    
       if(ED_TemCamCircular(pCabeca, pTarefa, numTarefas, 0)){ // assertiva
          OP_ExcluirRequisito(pCabeca, idTarefa, idReq);
-         throw ; //EXCEPTION CRIA_CAMINHO_CIRCULAR
+         throw TS_ExcecaoReqCirc; //EXCEPTION CRIA_CAMINHO_CIRCULAR
       }
 
    }
@@ -290,17 +290,17 @@
    void   OP_ExcluirRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
-         throw ; //EXCEPTION ID_TAREFA_INVALIDO
+         throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
       }
 
       if(!ED_EhReqExistente(pTarefa, idReq)){ // assertiva
-         throw ; //EXCEPTION ID_REQ_INVALIDO
+         throw TS_ExcecaoIdReqInval; //EXCEPTION ID_REQ_INVALIDO
       }
 
       ED_ExcluirRequisito(pTarefa, idReq);
@@ -324,7 +324,7 @@
    void   OP_VerificarReq(pGrafo pCabeca){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo *pTarefaTemp = pCabeca->org;
@@ -366,7 +366,7 @@
    bool   OP_TemOrigem(pGrafo pCabeca){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       return ED_TemOrigem(pCabeca);
@@ -376,7 +376,7 @@
    bool   OP_TemReqCircular(pGrafo pCabeca){
 
       if(!OP_EhGrafoValido){ // assertiva
-         throw ; //EXCEPTION GRAFO_INVALIDO
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       tpElementoGrafo * pTarefaTemp;
