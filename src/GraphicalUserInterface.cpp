@@ -2,7 +2,7 @@
 #include <ncurses.h>
 
 #define NLINES 30
-#define NCOLS 60
+#define NCOLS 130
 
 using namespace std;
 
@@ -18,6 +18,7 @@ void UI_InicializaGUI() {
     init_pair(cores_menu, COLOR_WHITE, COLOR_GREEN);
     init_pair(cores_nao_concluido,COLOR_RED,COLOR_WHITE);
     init_pair(cores_concluido,COLOR_GREEN,COLOR_WHITE);
+    init_pair(cores_erro,COLOR_WHITE,COLOR_RED);
 
     bkgd(COLOR_PAIR(cores_padrao));
 
@@ -26,6 +27,8 @@ void UI_InicializaGUI() {
     itensMenuInicial.push_back("Criar novo arquivo de tarefas");
 
     opcaoSelecionada = UI_SelecionaOpcao("Escolha uma ação:", itensMenuInicial);
+
+    UI_MostraMsg("Título Erro", "Mensagem de erro", cores_nao_concluido);
 
     char szEntrada[100];
 
@@ -102,6 +105,18 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
     delwin(hwndMenu); //apaga a janela criada para mostrar o menu de opções
     return inx; //posição da opção selecionada pelo usuário
 
+}
+
+void UI_MostraMsg(std::string titulo, std::string mensagem, TS_cores colorPair) {
+    WINDOW *hwndMsg = UI_CriaJanelaEntrada(titulo.c_str(), colorPair);
+    int nLinhas, nColunas;
+    getmaxyx(hwndMsg, nLinhas, nColunas); //mede as dimensões da janela
+    wattron(hwndMsg, A_BOLD); //mensagem é mostrada em negrito
+    mvwprintw(hwndMsg, nLinhas/2, (nColunas-mensagem.size())/2, mensagem.c_str());
+    //mostra mensagem no centro da janela
+    wattroff(hwndMsg, A_BOLD);
+    mvwprintw(hwndMsg, nLinhas-2, 2, "Pressione qualquer tecla para continuar.");
+    wgetch(hwndMsg);
 }
 
 WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {

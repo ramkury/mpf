@@ -9,7 +9,8 @@ enum TS_cores {
     cores_padrao,
     cores_menu,
     cores_concluido,
-    cores_nao_concluido
+    cores_nao_concluido,
+    cores_erro
 };
 
 /**
@@ -39,6 +40,14 @@ void UI_LeEntradaTexto(std::string titulo, char *szEntrada);
  * @return índice da opção selecionada pelo usuário (contagem começando em 0)
  */
 unsigned int    UI_SelecionaOpcao(std::string titulo, std::vector<std::string> itensMenu);
+
+/**
+ * Mostra mensagem na tela e aguarda o usuário pressionar uma tecla
+ * @param titulo Título da janela que será aberta com a mensagem de erro
+ * @param mensagem Mensagem a ser mostrada para o usuário
+ * @param colorPair cores a serem usadas como background da janela
+ */
+void UI_MostraMsg(std::string titulo, std::string mensagem, TS_cores colorPair);
 
 /**
  * Cria uma janela genérica para entrada do usuário.
