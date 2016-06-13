@@ -269,6 +269,7 @@
       numTarefas = 0;
 
       while(pTarefa != NULL){ // descobre número de tarefas
+         pTarefa = pTarefa->prox;
          numTarefas++;
       }
 
