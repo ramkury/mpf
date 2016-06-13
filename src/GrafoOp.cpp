@@ -386,6 +386,7 @@
       numTarefas  = 0;
 
       while(pTarefaTemp != NULL){ // descobre número de tarefas
+         pTarefaTemp = pTarefaTemp->prox;
          numTarefas++;
       }
 
