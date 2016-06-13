@@ -132,5 +132,13 @@ WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
     return hwndMenu;
 }
 
+WINDOW* UI_ListaTarefas(pGrafo grafo) {
+    
+    WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
+    //preciso da função que retorna a lista de tarefas ou a próxima tarefa.
+    return hwndLista;
+    
+}
+
 #undef NLINES
 #undef NCOLS

@@ -1,6 +1,8 @@
 #ifndef GRAPHICAL_USER_INTERFACE
 #define GRAPHICAL_USER_INTERFACE
 
+#include "GrafoOp.h"
+#include "GrafoED.h"
 #include <vector>
 #include <string>
 #include <ncurses.h>
@@ -12,6 +14,9 @@ enum TS_cores {
     cores_nao_concluido,
     cores_erro
 };
+
+vector<string> itensMenuInicial;
+vector<string> itensMenuEditar;
 
 /**
  * Realiza as operações necessárias para inicializar a interface de usuário
@@ -56,5 +61,12 @@ void UI_MostraMsg(std::string titulo, std::string mensagem, TS_cores colorPair);
  * @return referência para a janela criada
  */
 WINDOW* UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair);
+
+/**
+ * Cria janela para mostrar lista de tarefas
+ * @param grafo Cabeça do grafo contendo a lista de tarefas a serem listadas
+ * @return ponteiro para a janela criada
+ */
+WINDOW* UI_ListaTarefas(pGrafo grafo);
 
 #endif
