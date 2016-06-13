@@ -21,15 +21,15 @@
 *   @var TS_ExcecaoIdReqInval Reporta que o Id do requisito é inválido
 */
 	enum TS_Execao{
-		TS_ExcecaoFlhFopen;
-		TS_ExcecaoTrfInval;
-		TS_ExcecaoReqCirc;
-		TS_ExcecaoGrafoInval;
-		TS_ExcecaoIdJahExiste;
-		TS_ExcecaoIdTrfInval;
-		TS_ExcecaoDurNgtv;
-		TS_ExcecaoTmpNgtv;
-		TS_ExcecaoIdReqInval;
+		TS_ExcecaoFlhFopen,
+		TS_ExcecaoTrfInval,
+		TS_ExcecaoReqCirc,
+		TS_ExcecaoGrafoInval,
+		TS_ExcecaoIdJahExiste,
+		TS_ExcecaoIdTrfInval,
+		TS_ExcecaoDurNgtv,
+		TS_ExcecaoTmpNgtv,
+		TS_ExcecaoIdReqInval,
 	};
 
 /** @fn pGrafo OP_LerGrafo(char *)
