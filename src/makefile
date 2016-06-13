@@ -5,7 +5,8 @@ CXXFLAGS=-I$(IDIR)
 ODIR= ./obj
 
 LIBS= -g -lncurses
-LIBS_T = -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
+LIBS_T = -lgtest -lpthread -lgtest_main -g -lncurses
+LIBS_C = -ftest-coverage -fprofile-arcs
 
 _DEPS = GrafoED.h GrafoOp.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
