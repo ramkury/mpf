@@ -4,24 +4,24 @@ CXXFLAGS=-I$(IDIR)
 
 ODIR= ./obj
 
-LIBS= -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
+LIBS= -lncurses
 
-_DEPS = GrafoED.h GrafoOp.h
+_DEPS = GraphicalUserInterface.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = GrafoED.o GrafoOp.o
+_OBJ = GraphicalUserInterface.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CXX) $(LIBS) $(CXXFLAGS) -c -o $@ $<  
 
 main: $(OBJ)
-	$(CXX) $(LIBS) $(CXXFLAGS) -o gerenciador main.cpp $(OBJ) 
+	$(CXX) $(CXXFLAGS) -o tela TelaInicial.cpp $(OBJ) $(LIBS)
 
 .PHONY: teste
 
 teste: $(OBJ)
-	$(CXX) $(LIBS) $(CXXFLAGS) -o teste testes.cpp $(OBJ)
+	$(CXX) $(CXXFLAGS) -o teste testes.cpp $(OBJ) $(LIBS)
 
 .PHONY: clean
 
