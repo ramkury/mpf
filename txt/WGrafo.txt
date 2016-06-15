@@ -1,0 +1,3 @@
+102 'terceira tarefa' 0 2 3 2 101 100
+101 'segunda tarefa' 1 2 0 0
+100 'primeira tarefa' 0 3 0 0

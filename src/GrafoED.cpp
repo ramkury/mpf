@@ -25,7 +25,7 @@
          tarefaTemp = * pTarefaTemp;
          pReqTemp   = pTarefaTemp->lstPreReq;
 
-         fprintf(arq, "%u %s ", tarefaTemp.id, tarefaTemp.szNome); // escreve o id e nome
+         fprintf(arq, "%u '%s' ", tarefaTemp.id, tarefaTemp.szNome); // escreve o id e nome
 
          if(tarefaTemp.executado){ // escreve se foi ou não executado
             fprintf(arq, "1 ");
@@ -164,15 +164,25 @@
       pTempAnt = pCabeca->org;
 
       if(pTemp->id == idTarefa){
+         if(pTemp->lstPreReq != NULL){
+            ED_DestruirReq(pTemp->lstPreReq);
+         }
          pCabeca->org = pTemp->prox;
          free(pTemp);
+         return;
       }
 
       while(pTemp != NULL){
 
          if(pTemp->id == idTarefa){
+
+            if(pTemp->lstPreReq != NULL){
+               ED_DestruirReq(pTemp->lstPreReq);
+            } 
+
             pTempAnt->prox = pTemp->prox;
             free(pTemp);
+            break;
          }
 
          pTempAnt = pTemp;

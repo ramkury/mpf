@@ -2,10 +2,89 @@
 
 /* Funções */
 
+/* void OP_LerTarefa(FILE **arq, char **line) {
+
+   int i;
+   i = 0;
+
+   while(!feof(*arq) && fgetc(*arq) != '\n'){
+      i++;
+   }
+   
+   if (*line == NULL){
+
+      *line = (char*) malloc((10+i)*sizeof(char));
+
+   }else{
+
+      *line = (char*) realloc(*line, (10+i)*sizeof(char));
+
+   }
+      fseek(*arq, 0 - i, SEEK_CUR);
+      fgets(*line, i, *arq);
+   }
+
+}
+
+pGrafo * OP_LerGrafoArq(char * szNomeArq) {
+   FILE *arq = fopen(nome_arquivo, "r");
+   char separadores[] = ", \n";
+   char * c;
+   char * line = NULL;
+
+   if (arq == NULL)
+      return NULL;
+
+   Grafo * grafo = cria_grafo();
+
+   //primeira linha: vértices
+   OP_LerTarefa(&arq, &line);
+   c = strtok(line, separadores);
+   while(c != NULL)
+   {
+      insere_vertice(grafo, c);
+      c = strtok(NULL, separadores);
+   }
+
+   //segunda linha: origens
+   OP_LerTarefa(&arq, &line);
+   c = strtok(line, separadores);
+   while(c != NULL)
+   {
+      adiciona_origem(grafo, c);
+      c = strtok(NULL, separadores);
+   }
+
+   //proximas linhas: arestas
+   while(!feof(arq))
+   {
+      OP_LerTarefa(&arq, &line);
+      if (line == NULL)
+         break;
+      char * origem = strtok(line, separadores);
+      char * destino = strtok(NULL, separadores);
+      char * str_peso = strtok(NULL, separadores);
+      if (str_peso != NULL)
+      {
+         float peso = atof(str_peso);
+         insere_aresta(grafo, origem, destino, peso);
+      }
+      else
+         break;
+   }
+
+   fclose(arq);
+
+   free(line);
+
+   return grafo;
+
+}*/
+
    pGrafo OP_LerGrafo(char * szNomeArq){
 
       FILE * arq;
-      arq = fopen(szNomeArq, "w");
+      arq = fopen(szNomeArq, "r");
 
       if(arq == NULL){ //assertiva
          throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
@@ -13,32 +92,34 @@
 
       int tempQtdPreReq;
       int i;
-      int tempExecut;
       unsigned int id;
+      char szLinha[1000];
+      char * szCampoAtual;
+      char szSeparadores[] = "' \n";
       pGrafo pCabeca;
       tpElementoGrafo * pTarefa;
       pCabeca = ED_CriarGrafo();
 
-      while(fscanf(arq, "%u", &id) != EOF){ // tenta ler id e já colocar na tarefa
+      fgets(szLinha, 1000, arq);
+      while(!feof(arq)){ // tenta ler id e já colocar na tarefa
 
          pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
 
-         pTarefa->id = id;
-         fgetc(arq);
-         fscanf(arq, "%[^ ]", pTarefa->szNome); // pega o nome da tarefa
-         fgetc(arq);
-         fscanf(arq, "%d", &tempExecut); // pega o estado da execução
-         fgetc(arq);
-         fscanf(arq, "%d", &pTarefa->tempoDuracao); // pega o tempo de duração
-         fgetc(arq);
-         fscanf(arq, "%d", &pTarefa->tempoInicMin); // pega o tempo de início mínimo
-         fgetc(arq);
-         fscanf(arq, "%d", &tempQtdPreReq); // pega a quantidade de requisitos
-
-         pTarefa->executado = (bool) tempExecut;
-         pTarefa->qtdPreReq = tempQtdPreReq; // passa a quatidade para a tarefa
-         pTarefa->lstPreReq = NULL;
-         pTarefa->prox      = NULL;
+         szCampoAtual = strtok(szLinha, szSeparadores);
+         pTarefa->id  = atoi(szCampoAtual);
+         szCampoAtual = strtok(NULL, "'");
+         strcpy(pTarefa->szNome, szCampoAtual);
+         szCampoAtual          = strtok(NULL, szSeparadores);
+         pTarefa->executado    = (bool) atoi(szCampoAtual);
+         szCampoAtual          = strtok(NULL, szSeparadores);
+         pTarefa->tempoDuracao = atoi(szCampoAtual);
+         szCampoAtual          = strtok(NULL, szSeparadores);
+         pTarefa->tempoInicMin = atoi(szCampoAtual);
+         szCampoAtual          = strtok(NULL, szSeparadores);
+         tempQtdPreReq         = atoi(szCampoAtual);
+         pTarefa->qtdPreReq    = 0;
+         pTarefa->lstPreReq    = NULL;
+         pTarefa->prox         = NULL;
 
          if(!OP_EhTarefaValida(pCabeca, pTarefa)){ // assertiva estrutural
             throw TS_ExcecaoTrfInval; //EXCEPTION TAREFA_INVALIDA
@@ -48,11 +129,13 @@
 
          for(i = 0; i < tempQtdPreReq; i++){
 
-            fscanf(arq, "%d", &id);
-            fgetc(arq);
+            szCampoAtual = strtok(NULL, szSeparadores);
+            id           = atoi(szCampoAtual);
             ED_CriarRequisito(pTarefa, id);
 
          }
+
+         fgets(szLinha, 1000, arq);
 
       }
 
@@ -336,7 +419,7 @@
 
          while(pReqTemp != NULL){ // varre todos os requisitos
 
-            if(ED_EhIdExistente(pCabeca, pReqTemp->id)){ // se requisito não tiver id válido
+            if(!ED_EhIdExistente(pCabeca, pReqTemp->id)){ // se requisito não tiver id válido
                OP_ExcluirRequisito(pCabeca, pTarefaTemp->id, pReqTemp->id); // exclui requisito com id inválido
             }
             
@@ -361,6 +444,8 @@
       if(pTarefa->tempoInicMin < 0){
          return false;
       }
+
+      return true;
 
    } // função de apoio para as assertivas estruturais
 
@@ -398,6 +483,8 @@
          if(ED_TemCamCircular(pCabeca, pTarefaTemp, numTarefas, 0)){
             return true; // se tiver um caminho circular já mostra a existencia de requisitos circulares
          }
+
+         pTarefaTemp = pTarefaTemp->prox;
 
       }
 

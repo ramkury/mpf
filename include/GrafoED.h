@@ -96,17 +96,17 @@
 */
    void      ED_DestruirGrafo(pGrafo);
 
-/** @fn void ED_DesalocarTarefa(tpElementoGrafo *)
+/** @fn void ED_DestruirTarefas(tpElementoGrafo *)
 *   @brief Desaloca o espaço da memória alocado para a tarefa.
 *   @param ponteiro para a tarefa
 */
-   void      ED_DesalocarTarefa(tpElementoGrafo *);
+   void      ED_DestruirTarefas(tpElementoGrafo *);
 
-/** @fn void ED_DesalocarReq(tpElementoReq *);
+/** @fn void ED_DestruirReq(tpElementoReq *);
 *   @brief Desaloca o espaço da memória alocado para o requisito.
 *   @param ponteiro para o requisito
 */
-   void      ED_DesalocarReq(tpElementoReq *);
+   void      ED_DestruirReq(tpElementoReq *);
 
 /** @fn void ED_CriarRequisito(tpElementoGrafo *, unsigned int)
 *   @brief Aloca e preenche com as informações do requisito, já adicionando ao grafo.

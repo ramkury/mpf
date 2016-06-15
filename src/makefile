@@ -4,7 +4,8 @@ CXXFLAGS=-I$(IDIR)
 
 ODIR= ./obj
 
-LIBS= -lncurses
+LIBS= -g -lncurses
+LIBS_T = -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
 
 _DEPS = GraphicalUserInterface.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -21,7 +22,7 @@ main: $(OBJ)
 .PHONY: teste
 
 teste: $(OBJ)
-	$(CXX) $(CXXFLAGS) -o teste testes.cpp $(OBJ) $(LIBS)
+	$(CXX) $(LIBS_T) $(CXXFLAGS) -o teste testes.cpp $(OBJ)
 
 .PHONY: clean
 
