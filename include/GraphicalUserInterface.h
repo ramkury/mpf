@@ -66,4 +66,6 @@ WINDOW* UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair);
  */
 WINDOW* UI_ListaTarefas(pGrafo grafo);
 
+void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bool selecionado);
+
 #endif

@@ -4,6 +4,12 @@
 #define NLINES 30
 #define NCOLS 130
 
+#define COL_ID 1
+#define COL_NOME COL_ID + 11
+#define COL_DUR COL_NOME + 80
+#define COL_INIC COL_DUR + 10
+#define COL_QTD_REQ COL_INIC + 15
+
 using namespace std;
 
 vector<string> itensMenuInicial;
@@ -134,8 +140,8 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
     const int lineOffset = 3;
     const int colId = 1;
-    const int colNome = colId + 6;
-    const int colDur = colNome + 60;
+    const int colNome = colId + 11;
+    const int colDur = colNome + 80;
     const int colInic = colDur + 10;
     const int colQtdReq = colInic + 15;
     
@@ -151,21 +157,37 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
 
     for(int i = 0; i < v.size(); ++i) {
         tpElementoGrafo * atual = v.at(i);
-        if (atual->executado) {
-            wattron(hwndLista, COLOR_PAIR(cores_concluido));
-        }
-        else {
-            wattron(hwndLista, COLOR_PAIR(cores_nao_concluido));
-        }
-        mvwprintw(hwndLista, i+lineOffset, colId, "%u", atual->id);
-        mvwprintw(hwndLista, i+lineOffset, colNome, "%s", atual->szNome);
-        mvwprintw(hwndLista, i+lineOffset, colDur, "%d", atual->tempoDuracao);
-        mvwprintw(hwndLista, i+lineOffset, colInic, "%d", atual->tempoInicMin);
-        mvwprintw(hwndLista, i+lineOffset, colQtdReq, "%d", atual->qtdPreReq);
+        UI_ImprimeTarefa(hwndLista, atual, i+lineOffset, i == 1);
+        // if (atual->executado) {
+        //     wattron(hwndLista, COLOR_PAIR(cores_concluido));
+        // }
+        // else {
+        //     wattron(hwndLista, COLOR_PAIR(cores_nao_concluido));
+        // }
+        // mvwprintw(hwndLista, i+lineOffset, colId, "%-128u", atual->id);
+        // mvwprintw(hwndLista, i+lineOffset, colNome, "%s", atual->szNome);
+        // mvwprintw(hwndLista, i+lineOffset, colDur, "%d", atual->tempoDuracao);
+        // mvwprintw(hwndLista, i+lineOffset, colInic, "%d", atual->tempoInicMin);
+        // mvwprintw(hwndLista, i+lineOffset, colQtdReq, "%d", atual->qtdPreReq);
     }
 
     return hwndLista;
     
+}
+
+void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bool selecionado) {
+    selecionado ? wattron(hwndLista, A_STANDOUT) : wattroff(hwndLista, A_STANDOUT);
+    if (tarefa->executado) {
+        wattron(hwndLista, COLOR_PAIR(cores_concluido));
+    }
+    else {
+        wattron(hwndLista, COLOR_PAIR(cores_nao_concluido));
+    }
+    mvwprintw(hwndLista, coluna, COL_ID, "%-128u", tarefa->id);
+    mvwprintw(hwndLista, coluna, COL_NOME, "%s", tarefa->szNome);
+    mvwprintw(hwndLista, coluna, COL_DUR, "%d", tarefa->tempoDuracao);
+    mvwprintw(hwndLista, coluna, COL_INIC, "%d", tarefa->tempoInicMin);
+    mvwprintw(hwndLista, coluna, COL_QTD_REQ, "%d", tarefa->qtdPreReq);
 }
 
 #undef NLINES
