@@ -15,7 +15,6 @@ int main(void) {
     UI_InicializaGUI();
     grafo = OP_LerGrafo("RGrafo.txt");
     hwndListaTarefas = UI_ListaTarefas(grafo);
-    wgetch(hwndListaTarefas);
     delwin(hwndListaTarefas);
 
     mvprintw(2, 2, "Programa finalizado.");

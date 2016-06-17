@@ -1,8 +1,11 @@
 #include "GraphicalUserInterface.h"
 #include <ncurses.h>
+#include <cstring>
 
-#define NLINES 30
+#define NLINES 35
 #define NCOLS 130
+
+#define LN_OFFSET 3
 
 #define COL_ID 1
 #define COL_NOME COL_ID + 11
@@ -28,11 +31,12 @@ void UI_InicializaGUI() {
     itensMenuEditar.push_back("Adicionar requisito");
     itensMenuEditar.push_back("Remover requisito");
 
-    unsigned int opcaoSelecionada;
 
     initscr();
     start_color();
     curs_set(0); //não mostra o cursor na tela
+    cbreak(); //desabilita line buffering
+    noecho(); //não mostra a tecla digitada pelo usuário na tela
 
     /* Inicializa cores que serão utilizadas na interface */
     init_pair(cores_padrao, COLOR_WHITE, COLOR_BLACK);
@@ -62,10 +66,8 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
     WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
 
     char szTemp[100];
-    unsigned int inx, lineOffset = 4;
+    unsigned int inx;
     int currentInput;
-    cbreak(); //desabilita line buffering
-    noecho(); //não mostra a tecla digitada pelo usuário na tela
 
     for (inx = 0; inx < itensMenu.size(); ++inx) {
         if (inx == 0) { //primeiro item é destacado inicialmente
@@ -75,7 +77,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
             wattroff(hwndMenu, A_STANDOUT);
         }
         sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
-        mvwprintw(hwndMenu, inx + lineOffset, 1, szTemp);
+        mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
     }
 
     keypad(hwndMenu, TRUE);
@@ -83,7 +85,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
     inx = 0;
     currentInput = 0;
     do {
-        mvwprintw(hwndMenu, inx + lineOffset, 1, szTemp);
+        mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
         switch(currentInput) {
             case KEY_UP:
                 inx = (inx < 1) ? itensMenu.size()-1 : inx - 1;
@@ -94,7 +96,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
         }
         wattron(hwndMenu, A_STANDOUT);
         sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
-        mvwprintw(hwndMenu, inx + lineOffset, 1, szTemp);
+        mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
         wattroff(hwndMenu, A_STANDOUT);
     } while((currentInput = wgetch(hwndMenu)) != '\n'); /*o índice atual é selecionado
                                                         quando o usuário pressiona enter*/
@@ -114,6 +116,7 @@ void UI_MostraMsg(string titulo, string mensagem, TS_cores colorPair) {
     wattroff(hwndMsg, A_BOLD);
     mvwprintw(hwndMsg, nLinhas-2, 2, "Pressione qualquer tecla para continuar.");
     wgetch(hwndMsg);
+    delwin(hwndMsg);
 }
 
 WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
@@ -123,13 +126,16 @@ WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
     wbkgd(hwndMenu, COLOR_PAIR(colorPair));
 
     wattron(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
-    mvwprintw(hwndMenu, 1, 1, szTitulo); //imprime o título da janela
+    mvwprintw(hwndMenu, 1, (NCOLS - strlen(szTitulo))/2, szTitulo); //imprime o título da janela
     wattroff(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
 
     return hwndMenu;
 }
 
 WINDOW* UI_ListaTarefas(pGrafo grafo) {
+    int intUserInput;
+    bool shouldRebuildList = false;
+    int inx = 0;
     vector<tpElementoGrafo*> v;
     tpElementoGrafo * elemAtual;
     elemAtual = grafo->org;
@@ -138,38 +144,39 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
         elemAtual = elemAtual->prox;
     }
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
-    const int lineOffset = 3;
-    const int colId = 1;
-    const int colNome = colId + 11;
-    const int colDur = colNome + 80;
-    const int colInic = colDur + 10;
-    const int colQtdReq = colInic + 15;
+    keypad(hwndLista, true);
     
     wattron(hwndLista, A_BOLD | A_UNDERLINE);
 
-    mvwprintw(hwndLista, lineOffset-1, colId, "%-128s", "ID");
-    mvwprintw(hwndLista, lineOffset-1, colNome, "Nome da Tarefa");
-    mvwprintw(hwndLista, lineOffset-1, colDur, "Duracao");
-    mvwprintw(hwndLista, lineOffset-1, colInic, "T. Inic. Min");
-    mvwprintw(hwndLista, lineOffset-1, colQtdReq, "Qtd.PreReq");
+    mvwprintw(hwndLista, LN_OFFSET-1, COL_ID, "%-128s", "ID");
+    mvwprintw(hwndLista, LN_OFFSET-1, COL_NOME, "Nome da Tarefa");
+    mvwprintw(hwndLista, LN_OFFSET-1, COL_DUR, "Duracao");
+    mvwprintw(hwndLista, LN_OFFSET-1, COL_INIC, "T. Inic. Min");
+    mvwprintw(hwndLista, LN_OFFSET-1, COL_QTD_REQ, "Qtd.PreReq");
 
     wattroff(hwndLista, A_BOLD | A_UNDERLINE);
 
     for(int i = 0; i < v.size(); ++i) {
         tpElementoGrafo * atual = v.at(i);
-        UI_ImprimeTarefa(hwndLista, atual, i+lineOffset, i == 1);
-        // if (atual->executado) {
-        //     wattron(hwndLista, COLOR_PAIR(cores_concluido));
-        // }
-        // else {
-        //     wattron(hwndLista, COLOR_PAIR(cores_nao_concluido));
-        // }
-        // mvwprintw(hwndLista, i+lineOffset, colId, "%-128u", atual->id);
-        // mvwprintw(hwndLista, i+lineOffset, colNome, "%s", atual->szNome);
-        // mvwprintw(hwndLista, i+lineOffset, colDur, "%d", atual->tempoDuracao);
-        // mvwprintw(hwndLista, i+lineOffset, colInic, "%d", atual->tempoInicMin);
-        // mvwprintw(hwndLista, i+lineOffset, colQtdReq, "%d", atual->qtdPreReq);
+        UI_ImprimeTarefa(hwndLista, atual, i+LN_OFFSET, i == 0);
     }
+
+    do {
+        switch(wgetch(hwndLista)) {
+            case KEY_UP:
+                UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, false);
+                inx = (inx <= 0 ? v.size() - 1 : inx - 1);
+                UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, true);
+                break;
+            case KEY_DOWN:
+                UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, false);
+                inx = (inx >= v.size() - 1 ? 0 : inx + 1);
+                UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, true);
+                break;
+            default:
+                shouldRebuildList = true;
+        }
+    } while(!shouldRebuildList);
 
     return hwndLista;
     
