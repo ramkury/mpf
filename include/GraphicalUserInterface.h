@@ -15,9 +15,6 @@ enum TS_cores {
     cores_erro
 };
 
-vector<string> itensMenuInicial;
-vector<string> itensMenuEditar;
-
 /**
  * Realiza as operações necessárias para inicializar a interface de usuário
  * e mostra o menu inicial.

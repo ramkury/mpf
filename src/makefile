@@ -1,16 +1,16 @@
 IDIR =../include
 CXX=g++
-CXXFLAGS=-I$(IDIR)
+CXXFLAGS=-I$(IDIR) -g
 
 ODIR= ./obj
 
 LIBS= -g -lncurses
 LIBS_T = -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
 
-_DEPS = GraphicalUserInterface.h
+_DEPS = GraphicalUserInterface.h GrafoOp.h GrafoED.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = GraphicalUserInterface.o 
+_OBJ = GraphicalUserInterface.o GrafoOp.o GrafoED.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)

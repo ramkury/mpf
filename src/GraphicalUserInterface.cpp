@@ -6,47 +6,37 @@
 
 using namespace std;
 
+vector<string> itensMenuInicial;
+vector<string> itensMenuEditar;
+
 void UI_InicializaGUI() {
+
+    itensMenuInicial.push_back("Ler tarefas de arquivo existente");
+    itensMenuInicial.push_back("Criar novo arquivo de tarefas");
+
+    itensMenuEditar.push_back("ID");
+    itensMenuEditar.push_back("Nome");
+    itensMenuEditar.push_back("Tempo mínimo de início");
+    itensMenuEditar.push_back("Duração");
+    itensMenuEditar.push_back("Estado de execução");
+    itensMenuEditar.push_back("Adicionar requisito");
+    itensMenuEditar.push_back("Remover requisito");
 
     unsigned int opcaoSelecionada;
 
     initscr();
     start_color();
+    curs_set(0); //não mostra o cursor na tela
 
     /* Inicializa cores que serão utilizadas na interface */
     init_pair(cores_padrao, COLOR_WHITE, COLOR_BLACK);
     init_pair(cores_menu, COLOR_WHITE, COLOR_GREEN);
-    init_pair(cores_nao_concluido,COLOR_RED,COLOR_WHITE);
-    init_pair(cores_concluido,COLOR_GREEN,COLOR_WHITE);
+    init_pair(cores_nao_concluido,COLOR_WHITE,COLOR_RED);
+    init_pair(cores_concluido,COLOR_WHITE,COLOR_GREEN);
     init_pair(cores_erro,COLOR_WHITE,COLOR_RED);
 
     bkgd(COLOR_PAIR(cores_padrao));
 
-    vector<string> itensMenuInicial;
-    itensMenuInicial.push_back("Ler tarefas de arquivo existente");
-    itensMenuInicial.push_back("Criar novo arquivo de tarefas");
-
-    opcaoSelecionada = UI_SelecionaOpcao("Escolha uma ação:", itensMenuInicial);
-
-    UI_MostraMsg("Título Erro", "Mensagem de erro", cores_nao_concluido);
-
-    char szEntrada[100];
-
-    switch (opcaoSelecionada) {
-        case 0:
-            // Recebe a entrada do usuário com o nome do arquivo a ser aberto
-            UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szEntrada);
-            mvprintw(3, 3, szEntrada);
-            // Le o arquivo com o nome informado pelo usuário
-            // Abre tela de visualização de tarefas
-            break;
-        case 1:
-            // Recebe a entrada do usuário com o nome do arquivo a ser criado
-            UI_LeEntradaTexto("Digite o nome do arquivo a ser criado", szEntrada);
-            // Cria o arquivo com o nome informado pelo usuário
-            // Abre tela de visualização de tarefas
-            break;
-    }
 
 }
 
@@ -72,16 +62,17 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
     noecho(); //não mostra a tecla digitada pelo usuário na tela
 
     for (inx = 0; inx < itensMenu.size(); ++inx) {
-        if (inx == 0) //primeiro item é destacado inicialmente
+        if (inx == 0) { //primeiro item é destacado inicialmente
             wattron(hwndMenu, A_STANDOUT);
-        else
+        }
+        else {
             wattroff(hwndMenu, A_STANDOUT);
+        }
         sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
         mvwprintw(hwndMenu, inx + lineOffset, 1, szTemp);
     }
 
     keypad(hwndMenu, TRUE);
-    curs_set(0); //não mostra o cursor na tela
 
     inx = 0;
     currentInput = 0;
@@ -107,7 +98,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
 
 }
 
-void UI_MostraMsg(std::string titulo, std::string mensagem, TS_cores colorPair) {
+void UI_MostraMsg(string titulo, string mensagem, TS_cores colorPair) {
     WINDOW *hwndMsg = UI_CriaJanelaEntrada(titulo.c_str(), colorPair);
     int nLinhas, nColunas;
     getmaxyx(hwndMsg, nLinhas, nColunas); //mede as dimensões da janela
@@ -133,9 +124,46 @@ WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
 }
 
 WINDOW* UI_ListaTarefas(pGrafo grafo) {
-    
+    vector<tpElementoGrafo*> v;
+    tpElementoGrafo * elemAtual;
+    elemAtual = grafo->org;
+    while(elemAtual != NULL) { //adiciona todas as tarefas no vector v
+        v.push_back(elemAtual);
+        elemAtual = elemAtual->prox;
+    }
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
-    //preciso da função que retorna a lista de tarefas ou a próxima tarefa.
+    const int lineOffset = 3;
+    const int colId = 1;
+    const int colNome = colId + 6;
+    const int colDur = colNome + 60;
+    const int colInic = colDur + 10;
+    const int colQtdReq = colInic + 15;
+    
+    wattron(hwndLista, A_BOLD | A_UNDERLINE);
+
+    mvwprintw(hwndLista, lineOffset-1, colId, "%-128s", "ID");
+    mvwprintw(hwndLista, lineOffset-1, colNome, "Nome da Tarefa");
+    mvwprintw(hwndLista, lineOffset-1, colDur, "Duracao");
+    mvwprintw(hwndLista, lineOffset-1, colInic, "T. Inic. Min");
+    mvwprintw(hwndLista, lineOffset-1, colQtdReq, "Qtd.PreReq");
+
+    wattroff(hwndLista, A_BOLD | A_UNDERLINE);
+
+    for(int i = 0; i < v.size(); ++i) {
+        tpElementoGrafo * atual = v.at(i);
+        if (atual->executado) {
+            wattron(hwndLista, COLOR_PAIR(cores_concluido));
+        }
+        else {
+            wattron(hwndLista, COLOR_PAIR(cores_nao_concluido));
+        }
+        mvwprintw(hwndLista, i+lineOffset, colId, "%u", atual->id);
+        mvwprintw(hwndLista, i+lineOffset, colNome, "%s", atual->szNome);
+        mvwprintw(hwndLista, i+lineOffset, colDur, "%d", atual->tempoDuracao);
+        mvwprintw(hwndLista, i+lineOffset, colInic, "%d", atual->tempoInicMin);
+        mvwprintw(hwndLista, i+lineOffset, colQtdReq, "%d", atual->qtdPreReq);
+    }
+
     return hwndLista;
     
 }
