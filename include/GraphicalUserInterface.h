@@ -7,6 +7,8 @@
 #include <string>
 #include <ncurses.h>
 
+using namespace std;
+
 enum TS_cores {
     cores_padrao,
     cores_menu,

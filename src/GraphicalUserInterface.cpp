@@ -15,22 +15,7 @@
 
 using namespace std;
 
-vector<string> itensMenuInicial;
-vector<string> itensMenuEditar;
-
 void UI_InicializaGUI() {
-
-    itensMenuInicial.push_back("Ler tarefas de arquivo existente");
-    itensMenuInicial.push_back("Criar novo arquivo de tarefas");
-
-    itensMenuEditar.push_back("ID");
-    itensMenuEditar.push_back("Nome");
-    itensMenuEditar.push_back("Tempo mínimo de início");
-    itensMenuEditar.push_back("Duração");
-    itensMenuEditar.push_back("Estado de execução");
-    itensMenuEditar.push_back("Adicionar requisito");
-    itensMenuEditar.push_back("Remover requisito");
-
 
     initscr();
     start_color();
@@ -52,13 +37,14 @@ void UI_InicializaGUI() {
 
 void UI_LeEntradaTexto(string titulo, char *szEntrada) {
     WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
+    redrawwin(hwndMenu);
     getstr(szEntrada);
-    wrefresh(hwndMenu);
     delwin(hwndMenu);
 }
 
 void UI_FinalizaPrograma() {
     endwin();
+    exit(0);
 }
 
 unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
@@ -138,13 +124,15 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
     int inx = 0;
     vector<tpElementoGrafo*> v;
     tpElementoGrafo * elemAtual;
+
+    WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
+    keypad(hwndLista, true);
+
     elemAtual = grafo->org;
     while(elemAtual != NULL) { //adiciona todas as tarefas no vector v
         v.push_back(elemAtual);
         elemAtual = elemAtual->prox;
     }
-    WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
-    keypad(hwndLista, true);
     
     wattron(hwndLista, A_BOLD | A_UNDERLINE);
 

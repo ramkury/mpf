@@ -24,7 +24,7 @@
       fgets(szLinha, 1000, arq);
       while(!feof(arq)){ // tenta ler id e já colocar na tarefa
 
-         pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+         pTarefa = (tpElementoGrafo *)calloc(sizeof(tpElementoGrafo), 1);
 
          szCampoAtual = strtok(szLinha, szSeparadores);
          pTarefa->id  = atoi(szCampoAtual);
@@ -328,7 +328,7 @@
 
    void   OP_VerificarReq(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido ){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
