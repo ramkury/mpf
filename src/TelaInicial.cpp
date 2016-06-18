@@ -7,6 +7,8 @@
 
 using namespace std;
 
+void TrataExcecao(TS_Execao e);
+
 int main(void) {
 
     pGrafo grafo;
@@ -31,22 +33,13 @@ int main(void) {
     UI_InicializaGUI();
     switch(UI_SelecionaOpcao("O que deseja fazer?", itensMenuInicial)) {
         case 0: //ler tarefas de arquivo existente
-            // UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szNomeArq);
+            UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szNomeArq);
             try {
-                grafo = OP_LerGrafo(/*szNomeArq*/ "RGrafo.txt");
+                grafo = OP_LerGrafo(szNomeArq /*"RGrafo.txt"*/);
             } catch (TS_Execao e) {
-                string msg;
-                switch (e) {
-                    case TS_ExcecaoFlhFopen:
-                        msg = "Falha na abertura do arquivo";
-                        break;
-                    case TS_ExcecaoTrfInval:
-                        msg = "Tarefa invalida";
-                        break;
-                    default:
-                        msg = "Outra excecao";
-                }
-                UI_MostraMsg("Excecao", msg, cores_erro);
+                TrataExcecao(e);
+            } catch (...) {
+                UI_MostraMsg("Outra excecao", "Qualquer coisa", cores_erro);
                 UI_FinalizaPrograma();
             }
             break;
@@ -66,4 +59,20 @@ int main(void) {
     UI_FinalizaPrograma();
 
     return 0;
+}
+
+void TrataExcecao(TS_Execao e) {
+    string msg;
+    switch (e) {
+        case TS_ExcecaoFlhFopen:
+            msg = "Falha na abertura do arquivo";
+            break;
+        case TS_ExcecaoTrfInval:
+            msg = "Tarefa invalida";
+            break;
+        default:
+            msg = "Outra excecao";
+    }
+    UI_MostraMsg("Excecao", msg, cores_erro);
+    UI_FinalizaPrograma();
 }

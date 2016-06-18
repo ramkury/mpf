@@ -37,8 +37,10 @@ void UI_InicializaGUI() {
 
 void UI_LeEntradaTexto(string titulo, char *szEntrada) {
     WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
-    redrawwin(hwndMenu);
-    getstr(szEntrada);
+    wrefresh(hwndMenu);
+    curs_set(1);
+    echo();
+    mvwgetstr(hwndMenu, NLINES/2, 3, szEntrada);
     delwin(hwndMenu);
 }
 
