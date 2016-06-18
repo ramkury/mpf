@@ -242,7 +242,7 @@
       }
 
       tpElementoGrafo * pTarefa;
-      pTarefa   = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+      pTarefa   = (tpElementoGrafo *)calloc(1, sizeof(tpElementoGrafo));
       * pTarefa = tarefa;
       pTarefa->qtdPreReq = 0;
       pTarefa->lstPreReq = NULL;
