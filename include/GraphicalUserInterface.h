@@ -76,4 +76,6 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa);
 
 void UI_EditarID(pGrafo grafo, tpElementoGrafo *tarefa);
 
+void UI_EditarNome(pGrafo grafo, tpElementoGrafo *tarefa);
+
 #endif

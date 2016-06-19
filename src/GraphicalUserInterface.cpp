@@ -280,6 +280,7 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 UI_EditarID(grafo, tarefa);
                 break;
             case 1: //Nome
+                UI_EditarNome(grafo, tarefa);
                 break;
             case 2: //Tempo mínimo de início
                 break;
@@ -315,6 +316,13 @@ void UI_EditarID(pGrafo grafo, tpElementoGrafo *tarefa) {
                 throw e;
         }
     }
+}
+
+void UI_EditarNome(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+
+    UI_LeEntradaTexto("Digite o novo nome da tarefa:", szEntradaUsuario);
+    OP_EditarNome(grafo, tarefa->id, szEntradaUsuario);
 }
 
 #undef NLINES
