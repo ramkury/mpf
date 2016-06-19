@@ -2,85 +2,6 @@
 
 /* Funções */
 
-/* void OP_LerTarefa(FILE **arq, char **line) {
-
-   int i;
-   i = 0;
-
-   while(!feof(*arq) && fgetc(*arq) != '\n'){
-      i++;
-   }
-   
-   if (*line == NULL){
-
-      *line = (char*) malloc((10+i)*sizeof(char));
-
-   }else{
-
-      *line = (char*) realloc(*line, (10+i)*sizeof(char));
-
-   }
-      fseek(*arq, 0 - i, SEEK_CUR);
-      fgets(*line, i, *arq);
-   }
-
-}
-
-pGrafo * OP_LerGrafoArq(char * szNomeArq) {
-   FILE *arq = fopen(nome_arquivo, "r");
-   char separadores[] = ", \n";
-   char * c;
-   char * line = NULL;
-
-   if (arq == NULL)
-      return NULL;
-
-   Grafo * grafo = cria_grafo();
-
-   //primeira linha: vértices
-   OP_LerTarefa(&arq, &line);
-   c = strtok(line, separadores);
-   while(c != NULL)
-   {
-      insere_vertice(grafo, c);
-      c = strtok(NULL, separadores);
-   }
-
-   //segunda linha: origens
-   OP_LerTarefa(&arq, &line);
-   c = strtok(line, separadores);
-   while(c != NULL)
-   {
-      adiciona_origem(grafo, c);
-      c = strtok(NULL, separadores);
-   }
-
-   //proximas linhas: arestas
-   while(!feof(arq))
-   {
-      OP_LerTarefa(&arq, &line);
-      if (line == NULL)
-         break;
-      char * origem = strtok(line, separadores);
-      char * destino = strtok(NULL, separadores);
-      char * str_peso = strtok(NULL, separadores);
-      if (str_peso != NULL)
-      {
-         float peso = atof(str_peso);
-         insere_aresta(grafo, origem, destino, peso);
-      }
-      else
-         break;
-   }
-
-   fclose(arq);
-
-   free(line);
-
-   return grafo;
-
-}*/
-
    pGrafo OP_LerGrafo(char * szNomeArq){
 
       FILE * arq;
@@ -103,7 +24,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
       fgets(szLinha, 1000, arq);
       while(!feof(arq)){ // tenta ler id e já colocar na tarefa
 
-         pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+         pTarefa = (tpElementoGrafo *)calloc(sizeof(tpElementoGrafo), 1);
 
          szCampoAtual = strtok(szLinha, szSeparadores);
          pTarefa->id  = atoi(szCampoAtual);
@@ -156,7 +77,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
        throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
       }
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -176,7 +97,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    int    OP_CalcularTempoMinExec(pGrafo pCabeca, unsigned int idTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva de entrada
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva de entrada
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -190,7 +111,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_EditarId(pGrafo pCabeca, unsigned int idTarefa, unsigned int novoIdTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -210,7 +131,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_EditarNome(pGrafo pCabeca, unsigned int idTarefa, char * novoNome){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -226,7 +147,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_EditarEstadoExec(pGrafo pCabeca, unsigned int idTarefa, bool estadoExec){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -242,7 +163,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_EditarDuracao(pGrafo pCabeca, unsigned int idTarefa, int novoTempoDuracao){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -262,7 +183,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_EditarInicMin(pGrafo pCabeca, unsigned int idTarefa, int novoTempoInicMin){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -282,7 +203,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_ExcluirTarefa(pGrafo pCabeca, unsigned int idTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -321,7 +242,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
       }
 
       tpElementoGrafo * pTarefa;
-      pTarefa   = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+      pTarefa   = (tpElementoGrafo *)calloc(1, sizeof(tpElementoGrafo));
       * pTarefa = tarefa;
       pTarefa->qtdPreReq = 0;
       pTarefa->lstPreReq = NULL;
@@ -337,7 +258,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_CriarRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -373,7 +294,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
    
    void   OP_ExcluirRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -407,7 +328,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    void   OP_VerificarReq(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -451,7 +372,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    bool   OP_TemOrigem(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -461,7 +382,7 @@ pGrafo * OP_LerGrafoArq(char * szNomeArq) {
 
    bool   OP_TemReqCircular(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 

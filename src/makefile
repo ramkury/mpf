@@ -1,23 +1,23 @@
 IDIR =../include
 CXX=g++
-CXXFLAGS=-I$(IDIR)
+CXXFLAGS=-I$(IDIR) -g
 
 ODIR= ./obj
 
 LIBS= -g -lncurses
 LIBS_T = -lgtest -lpthread -lgtest_main -g -ftest-coverage -fprofile-arcs -lncurses
 
-_DEPS = GrafoED.h GrafoOp.h
+_DEPS = GraphicalUserInterface.h GrafoOp.h GrafoED.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = GrafoED.o GrafoOp.o
+_OBJ = GraphicalUserInterface.o GrafoOp.o GrafoED.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
 	$(CXX) $(LIBS) $(CXXFLAGS) -c -o $@ $<  
 
 main: $(OBJ)
-	$(CXX) $(LIBS) $(CXXFLAGS) -o gerenciador main.cpp $(OBJ) 
+	$(CXX) $(CXXFLAGS) -o tela TelaInicial.cpp $(OBJ) $(LIBS)
 
 .PHONY: teste
 

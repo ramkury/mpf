@@ -177,7 +177,7 @@
 */
    void      ED_EditarInicMin(tpElementoGrafo *, int);
 
-/** @fn tpElementoGrafo * ED_EhIdValido(pGrafo, unsigned int)
+/** @fn tpElementoGrafo * ED_EhIdExistente(pGrafo, unsigned int)
 *   @brief Verifica se o ID existe e retorna o ponteiro para a tarefa, caso não exista retorna NULL.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
