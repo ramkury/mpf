@@ -283,8 +283,10 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 UI_EditarNome(grafo, tarefa);
                 break;
             case 2: //Tempo mínimo de início
+                UI_EditarInicMin(grafo, tarefa);
                 break;
             case 3: //Duração
+                UI_EditarDuracao(grafo, tarefa);
                 break;
             case 4: //Estado de execução
                 break;
@@ -323,6 +325,44 @@ void UI_EditarNome(pGrafo grafo, tpElementoGrafo *tarefa) {
 
     UI_LeEntradaTexto("Digite o novo nome da tarefa:", szEntradaUsuario);
     OP_EditarNome(grafo, tarefa->id, szEntradaUsuario);
+}
+
+void UI_EditarInicMin(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+    int tempoInicMin;
+
+    UI_LeEntradaTexto("Digite o novo tempo minimo de inicio da tarefa:", szEntradaUsuario);
+    tempoInicMin = atoi(szEntradaUsuario);
+    try {
+        OP_EditarInicMin(grafo, tarefa->id, tempoInicMin);
+    } catch(TS_Execao e) {
+        if (e == TS_ExcecaoTmpNgtv) {
+            UI_MostraMsg("Erro!", "O tempo minimo de execucao nao pode ser um valor negativo", cores_erro);
+            return;
+        }
+        else {
+            throw e;
+        }
+    }
+}
+
+void UI_EditarDuracao(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+    int novaDuracao;
+
+    UI_LeEntradaTexto("Digite o novo tempo de duracao da tarefa:", szEntradaUsuario);
+    novaDuracao = atoi(szEntradaUsuario);
+    try {
+        OP_EditarDuracao(grafo, tarefa->id, novaDuracao);
+    } catch (TS_Execao e) {
+        if (e == TS_ExcecaoDurNgtv) {
+            UI_MostraMsg("Erro!", "A duracao de uma tarefa nao pode ser um valor negativo!", cores_erro);
+            return;
+        }
+        else {
+            throw e;
+        }
+    }
 }
 
 #undef NLINES

@@ -78,4 +78,8 @@ void UI_EditarID(pGrafo grafo, tpElementoGrafo *tarefa);
 
 void UI_EditarNome(pGrafo grafo, tpElementoGrafo *tarefa);
 
+void UI_EditarInicMin(pGrafo grafo, tpElementoGrafo *tarefa);
+
+void UI_EditarDuracao(pGrafo grafo, tpElementoGrafo *tarefa);
+
 #endif
