@@ -86,4 +86,6 @@ void UI_EditarEstadoExec(pGrafo grafo, tpElementoGrafo *tarefa);
 
 void UI_CriarRequisito(pGrafo grafo, tpElementoGrafo *tarefa);
 
+void UI_ExcluirRequisito(pGrafo grafo, tpElementoGrafo *tarefa);
+
 #endif

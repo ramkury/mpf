@@ -295,6 +295,7 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 UI_CriarRequisito(grafo, tarefa);
                 break;
             case 6: //Remover requisito
+                UI_ExcluirRequisito(grafo, tarefa);
                 break;
         }
     }
@@ -398,6 +399,26 @@ void UI_CriarRequisito(pGrafo grafo, tpElementoGrafo *tarefa) {
                 throw e;
         }
     }
+}
+
+void UI_ExcluirRequisito(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+    unsigned int idRequisito;
+
+    UI_LeEntradaTexto("Digite o ID do pre requisito a ser removido", szEntradaUsuario);
+    idRequisito = atoi(szEntradaUsuario);
+
+    try {
+        OP_ExcluirRequisito(grafo, tarefa->id, idRequisito);
+    } catch(TS_Execao e) {
+        switch (e) {
+            case TS_ExcecaoIdReqInval:
+                UI_MostraMsg("Erro!", "Nao existe nenhuma tarefa com esse ID!", cores_erro);
+                return;
+            default:
+                throw e;
+        }
+    } 
 }
 
 #undef NLINES
