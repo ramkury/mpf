@@ -289,6 +289,7 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 UI_EditarDuracao(grafo, tarefa);
                 break;
             case 4: //Estado de execução
+                UI_EditarEstadoExec(grafo, tarefa);
                 break;
             case 5: //Adicionar requisito
                 break;
@@ -363,6 +364,16 @@ void UI_EditarDuracao(pGrafo grafo, tpElementoGrafo *tarefa) {
             throw e;
         }
     }
+}
+
+void UI_EditarEstadoExec(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[10];
+    bool novoEstadoExecucao;
+
+    UI_LeEntradaTexto("Digite 1 para executado e 0 para nao executado:", szEntradaUsuario);
+    novoEstadoExecucao = atoi(szEntradaUsuario);
+
+    OP_EditarEstadoExec(grafo, tarefa->id, novoEstadoExecucao);
 }
 
 #undef NLINES
