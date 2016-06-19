@@ -72,4 +72,8 @@ void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bo
 
 void UI_NovaTarefa(pGrafo pCabeca);
 
+void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa);
+
+void UI_EditarID(pGrafo grafo, tpElementoGrafo *tarefa);
+
 #endif

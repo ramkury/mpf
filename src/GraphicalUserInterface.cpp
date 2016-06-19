@@ -15,7 +15,18 @@
 
 using namespace std;
 
+vector<string> itensMenuEditar;
+
 void UI_InicializaGUI() {
+
+    itensMenuEditar.push_back("ID");
+    itensMenuEditar.push_back("Nome");
+    itensMenuEditar.push_back("Tempo minimo de inicio");
+    itensMenuEditar.push_back("Duracao");
+    itensMenuEditar.push_back("Estado de execucao");
+    itensMenuEditar.push_back("Adicionar requisito");
+    itensMenuEditar.push_back("Remover requisito");
+    itensMenuEditar.push_back("Voltar");
 
     initscr();
     start_color();
@@ -125,6 +136,8 @@ WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
     wattron(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
     mvwprintw(hwndMenu, 1, (NCOLS - strlen(szTitulo))/2, szTitulo); //imprime o título da janela
     wattroff(hwndMenu, A_BOLD | A_STANDOUT | A_UNDERLINE);
+
+    redrawwin(hwndMenu);
 
     return hwndMenu;
 }
@@ -255,7 +268,53 @@ void UI_NovaTarefa(pGrafo pCabeca) {
                 throw e;
         }
     }
+}
 
+void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
+    unsigned int opcaoSelecionada;
+
+    if (tarefa != NULL) {
+        opcaoSelecionada = UI_SelecionaOpcao(string(tarefa->szNome), itensMenuEditar);
+        switch (opcaoSelecionada) {
+            case 0: //ID
+                UI_EditarID(grafo, tarefa);
+                break;
+            case 1: //Nome
+                break;
+            case 2: //Tempo mínimo de início
+                break;
+            case 3: //Duração
+                break;
+            case 4: //Estado de execução
+                break;
+            case 5: //Adicionar requisito
+                break;
+            case 6: //Remover requisito
+                break;
+        }
+    }
+}
+
+void UI_EditarID(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+    unsigned int novoId;
+
+    UI_LeEntradaTexto("Digite o novo ID da tarefa:", szEntradaUsuario);
+    novoId = atoi(szEntradaUsuario);
+    try {
+        OP_EditarId(grafo, tarefa->id, novoId);
+    } catch(TS_Execao e) {
+        switch (e) {
+            case TS_ExcecaoIdJahExiste:
+                UI_MostraMsg("Erro!", "Esse ID jah existe!", cores_erro);
+                return;
+            case TS_ExcecaoIdTrfInval:
+                UI_MostraMsg("Erro!", "ID invalido!", cores_erro);
+                return;
+            default:
+                throw e;
+        }
+    }
 }
 
 #undef NLINES

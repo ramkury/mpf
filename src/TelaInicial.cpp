@@ -10,7 +10,6 @@ using namespace std;
 void TrataExcecao(TS_Execao e);
 
 vector<string> itensMenuInicial;
-vector<string> itensMenuEditar;
 
 int main(void) {
 
@@ -22,16 +21,8 @@ int main(void) {
     itensMenuInicial.push_back("Ler tarefas de arquivo existente");
     itensMenuInicial.push_back("Criar novo arquivo de tarefas");
 
-    itensMenuEditar.push_back("ID");
-    itensMenuEditar.push_back("Nome");
-    itensMenuEditar.push_back("Tempo mínimo de início");
-    itensMenuEditar.push_back("Duração");
-    itensMenuEditar.push_back("Estado de execução");
-    itensMenuEditar.push_back("Adicionar requisito");
-    itensMenuEditar.push_back("Remover requisito");
-
-
     UI_InicializaGUI();
+    
     switch(UI_SelecionaOpcao("O que deseja fazer?", itensMenuInicial)) {
         case 0: //ler tarefas de arquivo existente
             UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szNomeArq);
@@ -40,7 +31,6 @@ int main(void) {
             } catch (TS_Execao e) {
                 TrataExcecao(e);
             } catch (...) {
-                UI_MostraMsg("Outra excecao", "Qualquer coisa", cores_erro);
                 UI_FinalizaPrograma();
             }
             break;
@@ -51,7 +41,7 @@ int main(void) {
     }
 
     tarefaSelecionada = UI_ListaTarefas(grafo);
-    getch();
+    UI_EditarTarefa(grafo, tarefaSelecionada);
 
     mvprintw(2, 2, "Programa finalizado.");
     refresh();
