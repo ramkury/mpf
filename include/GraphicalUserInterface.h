@@ -88,4 +88,6 @@ void UI_CriarRequisito(pGrafo grafo, tpElementoGrafo *tarefa);
 
 void UI_ExcluirRequisito(pGrafo grafo, tpElementoGrafo *tarefa);
 
+void UI_ExcluirTarefa(pGrafo grafo, tpElementoGrafo *tarefa);
+
 #endif

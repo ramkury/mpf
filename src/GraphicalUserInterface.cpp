@@ -16,6 +16,7 @@
 using namespace std;
 
 vector<string> itensMenuEditar;
+vector<string> itensMenuConfirmacao;
 
 void UI_InicializaGUI() {
 
@@ -26,7 +27,11 @@ void UI_InicializaGUI() {
     itensMenuEditar.push_back("Estado de execucao");
     itensMenuEditar.push_back("Adicionar requisito");
     itensMenuEditar.push_back("Remover requisito");
+    itensMenuEditar.push_back("Excluir tarefa");
     itensMenuEditar.push_back("Voltar");
+
+    itensMenuConfirmacao.push_back("Nao");
+    itensMenuConfirmacao.push_back("Sim");
 
     initscr();
     start_color();
@@ -297,6 +302,9 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
             case 6: //Remover requisito
                 UI_ExcluirRequisito(grafo, tarefa);
                 break;
+            case 7: //Excluir tarefa
+                UI_ExcluirTarefa(grafo, tarefa);
+                break;
         }
     }
 }
@@ -419,6 +427,14 @@ void UI_ExcluirRequisito(pGrafo grafo, tpElementoGrafo *tarefa) {
                 throw e;
         }
     } 
+}
+
+void UI_ExcluirTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
+    int selecaoUsuario;
+    selecaoUsuario = UI_SelecionaOpcao("Tem certeza que deseja excluir essa tarefa?", itensMenuConfirmacao);
+    if (selecaoUsuario == 1) {
+        OP_ExcluirTarefa(grafo, tarefa->id);
+    }
 }
 
 #undef NLINES
