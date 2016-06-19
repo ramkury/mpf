@@ -9,12 +9,13 @@ using namespace std;
 
 void TrataExcecao(TS_Execao e);
 
+vector<string> itensMenuInicial;
+vector<string> itensMenuEditar;
+
 int main(void) {
 
     pGrafo grafo;
-    WINDOW * hwndListaTarefas;
-    vector<string> itensMenuInicial;
-    vector<string> itensMenuEditar;
+    tpElementoGrafo *tarefaSelecionada;
     char szNomeArq[100];
     unsigned int selecaoUsuario;
 
@@ -35,7 +36,7 @@ int main(void) {
         case 0: //ler tarefas de arquivo existente
             UI_LeEntradaTexto("Digite o nome do arquivo a ser lido", szNomeArq);
             try {
-                grafo = OP_LerGrafo(szNomeArq /*"RGrafo.txt"*/);
+                grafo = OP_LerGrafo(szNomeArq);
             } catch (TS_Execao e) {
                 TrataExcecao(e);
             } catch (...) {
@@ -45,12 +46,12 @@ int main(void) {
             break;
         case 1: //criar novo arquivo de tarefas
             grafo = ED_CriarGrafo();
+            UI_NovaTarefa(grafo);
             break;
     }
 
-    hwndListaTarefas = UI_ListaTarefas(grafo);
+    tarefaSelecionada = UI_ListaTarefas(grafo);
     getch();
-    delwin(hwndListaTarefas);
 
     mvprintw(2, 2, "Programa finalizado.");
     refresh();

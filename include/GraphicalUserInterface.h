@@ -64,10 +64,12 @@ WINDOW* UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair);
 /**
  * Cria janela para mostrar lista de tarefas
  * @param grafo Cabeça do grafo contendo a lista de tarefas a serem listadas
- * @return ponteiro para a janela criada
+ * @return ponteiro para a tarefa selecionada
  */
-WINDOW* UI_ListaTarefas(pGrafo grafo);
+tpElementoGrafo* UI_ListaTarefas(pGrafo grafo);
 
 void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bool selecionado);
+
+void UI_NovaTarefa(pGrafo pCabeca);
 
 #endif

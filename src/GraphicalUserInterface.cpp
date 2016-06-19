@@ -53,6 +53,11 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
 
     WINDOW * hwndMenu = UI_CriaJanelaEntrada(titulo.c_str(), cores_menu);
 
+    keypad(hwndMenu, TRUE);
+    curs_set(0);
+    cbreak();
+    noecho();
+
     char szTemp[100];
     unsigned int inx;
     int currentInput;
@@ -67,8 +72,6 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
         sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
         mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
     }
-
-    keypad(hwndMenu, TRUE);
 
     inx = 0;
     currentInput = 0;
@@ -95,7 +98,12 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
 }
 
 void UI_MostraMsg(string titulo, string mensagem, TS_cores colorPair) {
+    
     WINDOW *hwndMsg = UI_CriaJanelaEntrada(titulo.c_str(), colorPair);
+
+    curs_set(0);
+    noecho();
+
     int nLinhas, nColunas;
     getmaxyx(hwndMsg, nLinhas, nColunas); //mede as dimensões da janela
     wattron(hwndMsg, A_BOLD); //mensagem é mostrada em negrito
@@ -105,6 +113,7 @@ void UI_MostraMsg(string titulo, string mensagem, TS_cores colorPair) {
     mvwprintw(hwndMsg, nLinhas-2, 2, "Pressione qualquer tecla para continuar.");
     wgetch(hwndMsg);
     delwin(hwndMsg);
+
 }
 
 WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
@@ -120,7 +129,7 @@ WINDOW *UI_CriaJanelaEntrada(const char *szTitulo, TS_cores colorPair) {
     return hwndMenu;
 }
 
-WINDOW* UI_ListaTarefas(pGrafo grafo) {
+tpElementoGrafo* UI_ListaTarefas(pGrafo grafo) {
     int intUserInput;
     bool shouldRebuildList = false;
     int inx = 0;
@@ -129,6 +138,8 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
 
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
     keypad(hwndLista, true);
+    curs_set(0);
+    noecho();
 
     elemAtual = grafo->org;
     while(elemAtual != NULL) { //adiciona todas as tarefas no vector v
@@ -145,6 +156,12 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
     mvwprintw(hwndLista, LN_OFFSET-1, COL_QTD_REQ, "Qtd.PreReq");
 
     wattroff(hwndLista, A_BOLD | A_UNDERLINE);
+
+    if (v.size() == 0) {
+        wgetch(hwndLista);
+        delwin(hwndLista);
+        return NULL;
+    }
 
     for(int i = 0; i < v.size(); ++i) {
         tpElementoGrafo * atual = v.at(i);
@@ -168,11 +185,12 @@ WINDOW* UI_ListaTarefas(pGrafo grafo) {
         }
     } while(!shouldRebuildList);
 
-    return hwndLista;
-    
+    delwin(hwndLista);
+    return v.at(inx);
+
 }
 
-void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bool selecionado) {
+void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bool selecionado = false) {
     selecionado ? wattron(hwndLista, A_STANDOUT) : wattroff(hwndLista, A_STANDOUT);
     if (tarefa->executado) {
         wattron(hwndLista, COLOR_PAIR(cores_concluido));
@@ -185,6 +203,59 @@ void UI_ImprimeTarefa(WINDOW *hwndLista, tpElementoGrafo* tarefa, int coluna, bo
     mvwprintw(hwndLista, coluna, COL_DUR, "%d", tarefa->tempoDuracao);
     mvwprintw(hwndLista, coluna, COL_INIC, "%d", tarefa->tempoInicMin);
     mvwprintw(hwndLista, coluna, COL_QTD_REQ, "%d", tarefa->qtdPreReq);
+}
+
+void UI_NovaTarefa(pGrafo pCabeca) {
+    char szEntradaUsuario[100];
+    tpElementoGrafo novaTarefa;
+    int numPreReq;
+
+    UI_LeEntradaTexto("Digite o ID da tarefa", szEntradaUsuario);
+    novaTarefa.id = atoi(szEntradaUsuario);
+    UI_LeEntradaTexto("Digite o nome da tarefa", szEntradaUsuario);
+    strcpy(novaTarefa.szNome, szEntradaUsuario);
+    UI_LeEntradaTexto("A tarefa ja foi executada? (0 para não, 1 para sim)", szEntradaUsuario);
+    novaTarefa.executado = atoi(szEntradaUsuario);
+    UI_LeEntradaTexto("Digite o tempo de duracao da tarefa", szEntradaUsuario);
+    novaTarefa.tempoDuracao = atoi(szEntradaUsuario);
+    UI_LeEntradaTexto("Digite o tempo minimo de inicio da tarefa", szEntradaUsuario);
+    novaTarefa.tempoInicMin = atoi(szEntradaUsuario);
+
+    try {
+        OP_CriarTarefa(pCabeca, novaTarefa);
+    } catch(TS_Execao e) {
+        if (e == TS_ExcecaoTrfInval) {
+            UI_MostraMsg("Erro!", "Tarefa invalida!", cores_erro);
+            return;
+        }
+        else {
+            throw e;
+        }
+    }
+
+    UI_LeEntradaTexto("Digite o numero de pre requisitos da tarefa", szEntradaUsuario);
+    numPreReq = atoi(szEntradaUsuario);
+
+    try {
+        for (int i = 1; i <= numPreReq; ++i) {
+            char szTitulo[100];
+            sprintf(szTitulo, "Digite o ID do %do pre requisito", i);
+            UI_LeEntradaTexto(string(szTitulo), szEntradaUsuario);
+            OP_CriarRequisito(pCabeca, novaTarefa.id, atoi(szEntradaUsuario));
+        }
+    } catch(TS_Execao e) {
+        switch (e) {
+            case TS_ExcecaoIdReqInval:
+                UI_MostraMsg("Erro!", "ID da tarefa invalido!", cores_erro);
+                return;
+            case TS_ExcecaoReqCirc:
+                UI_MostraMsg("Erro!", "Pre requisito cria caminho circular!", cores_erro);
+                return;
+            default:
+                throw e;
+        }
+    }
+
 }
 
 #undef NLINES
