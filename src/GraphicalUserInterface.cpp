@@ -292,6 +292,7 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 UI_EditarEstadoExec(grafo, tarefa);
                 break;
             case 5: //Adicionar requisito
+                UI_CriarRequisito(grafo, tarefa);
                 break;
             case 6: //Remover requisito
                 break;
@@ -374,6 +375,29 @@ void UI_EditarEstadoExec(pGrafo grafo, tpElementoGrafo *tarefa) {
     novoEstadoExecucao = atoi(szEntradaUsuario);
 
     OP_EditarEstadoExec(grafo, tarefa->id, novoEstadoExecucao);
+}
+
+void UI_CriarRequisito(pGrafo grafo, tpElementoGrafo *tarefa) {
+    char szEntradaUsuario[100];
+    unsigned int idRequisito;
+
+    UI_LeEntradaTexto("Digite o ID da tarefa a ser adicionada como pre requisito", szEntradaUsuario);
+    idRequisito = atoi(szEntradaUsuario);
+
+    try {
+        OP_CriarRequisito(grafo, tarefa->id, idRequisito);
+    } catch(TS_Execao e) {
+        switch (e) {
+            case TS_ExcecaoIdReqInval:
+                UI_MostraMsg("Erro!", "Nao existe nenhuma tarefa com esse ID!", cores_erro);
+                return;
+            case TS_ExcecaoReqCirc:
+                UI_MostraMsg("Erro!", "Adicionar esse requisito cria um caminho circular!", cores_erro);
+                return;
+            default:
+                throw e;
+        }
+    }
 }
 
 #undef NLINES
