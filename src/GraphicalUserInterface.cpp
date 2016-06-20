@@ -48,7 +48,8 @@ void UI_InicializaGUI() {
 
     bkgd(COLOR_PAIR(cores_padrao));
 
-
+    mvprintw(NLINES+5, 2, "Pressione enter para editar a tarefa selecionada ou M para abrir o menu.");
+    refresh();
 }
 
 void UI_LeEntradaTexto(string titulo, char *szEntrada) {
@@ -157,7 +158,7 @@ tpElementoGrafo* UI_ListaTarefas(pGrafo grafo) {
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
     keypad(hwndLista, true);
     curs_set(0);
-    noecho();
+    noecho();   
 
     elemAtual = grafo->org;
     while(elemAtual != NULL) { //adiciona todas as tarefas no vector v
@@ -198,7 +199,11 @@ tpElementoGrafo* UI_ListaTarefas(pGrafo grafo) {
                 inx = (inx >= v.size() - 1 ? 0 : inx + 1);
                 UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, true);
                 break;
-            default:
+            case 'M':
+            case 'm':
+                delwin(hwndLista);
+                return NULL;
+            case '\n':
                 shouldRebuildList = true;
         }
     } while(!shouldRebuildList);
@@ -435,6 +440,17 @@ void UI_ExcluirTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
     if (selecaoUsuario == 1) {
         OP_ExcluirTarefa(grafo, tarefa->id);
     }
+}
+
+void UI_EscreverGrafo(pGrafo grafo) {
+    char szEntradaUsuario[100];
+
+    UI_LeEntradaTexto("Digite o nome do arquivo a ser escrito", szEntradaUsuario);
+    OP_SalvarGrafo(grafo, szEntradaUsuario);
+}
+
+void UI_DefinirTempo(pGrafo grafo) {
+
 }
 
 #undef NLINES
