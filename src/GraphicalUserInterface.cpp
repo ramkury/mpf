@@ -41,7 +41,7 @@ void UI_InicializaGUI() {
 
     /* Inicializa cores que serão utilizadas na interface */
     init_pair(cores_padrao, COLOR_WHITE, COLOR_BLACK);
-    init_pair(cores_menu, COLOR_WHITE, COLOR_GREEN);
+    init_pair(cores_menu, COLOR_WHITE, COLOR_CYAN);
     init_pair(cores_nao_concluido,COLOR_WHITE,COLOR_RED);
     init_pair(cores_concluido,COLOR_WHITE,COLOR_GREEN);
     init_pair(cores_erro,COLOR_WHITE,COLOR_RED);
@@ -86,7 +86,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
         else {
             wattroff(hwndMenu, A_STANDOUT);
         }
-        sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
+        sprintf(szTemp, "%s", itensMenu.at(inx).c_str());
         mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
     }
 
@@ -450,7 +450,20 @@ void UI_EscreverGrafo(pGrafo grafo) {
 }
 
 void UI_DefinirTempo(pGrafo grafo) {
+    char szEntradaUsuario[100];
+    int tempo;
 
+    UI_LeEntradaTexto("Digite o novo tempo", szEntradaUsuario);
+    tempo = atoi(szEntradaUsuario);
+    try {
+        OP_AtualizarGrafo(grafo, tempo);
+    } catch(TS_Execao e) {
+        if (e == TS_ExcecaoTmpNgtv) {
+            UI_MostraMsg("Erro", "O tempo nao pode ser negativo!", cores_erro);
+        } else {
+            throw e;
+        }
+    }
 }
 
 #undef NLINES

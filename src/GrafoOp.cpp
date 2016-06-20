@@ -431,7 +431,7 @@
       tpElementoGrafo * pTarefa;
       pTarefa = pCabeca->org;
 
-      while(pTarefa != null){
+      while(pTarefa != NULL){
 
          if(ED_CalcularTempoMinExec(pCabeca, pTarefa->id) < tempoAtual){
             ED_EditarEstadoExec(pTarefa, true);
