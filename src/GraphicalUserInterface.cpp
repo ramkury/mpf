@@ -48,7 +48,8 @@ void UI_InicializaGUI() {
 
     bkgd(COLOR_PAIR(cores_padrao));
 
-
+    mvprintw(NLINES+5, 2, "Pressione enter para editar a tarefa selecionada ou M para abrir o menu.");
+    refresh();
 }
 
 void UI_LeEntradaTexto(string titulo, char *szEntrada) {
@@ -449,7 +450,7 @@ void UI_EscreverGrafo(pGrafo grafo) {
 }
 
 void UI_DefinirTempo(pGrafo grafo) {
-    
+
 }
 
 #undef NLINES
