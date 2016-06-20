@@ -90,4 +90,8 @@ void UI_ExcluirRequisito(pGrafo grafo, tpElementoGrafo *tarefa);
 
 void UI_ExcluirTarefa(pGrafo grafo, tpElementoGrafo *tarefa);
 
+void UI_EscreverGrafo(pGrafo grafo);
+
+void UI_DefinirTempo(pGrafo grafo);
+
 #endif
