@@ -8,13 +8,13 @@
 TEST(TestesIndividuais, TesteLeituraGrafo){
 /* testa a leitura de um .txt que contem 
  * um grafo consistente, depois testa
- * sua consistencia */ 
+ * sua consistencia */
 
-  char GrafoLeitura[20] = "leitura.txt",
-       GrafoInconsistente[20] = "inconsistente.txt";
+  char szGrafoLeitura[20] = "leitura.txt",
+       szGrafoInconsistente[20] = "inconsistente.txt";
  
   try{
-    pGrafo Tarefas = OP_LerGrafo(GrafoLeitura);
+    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
     ASSERT_TRUE(OP_EhGrafoValido(Tarefas) == true);
     ASSERT_TRUE(OP_TemReqCircular(Tarefas) == false);
   }
@@ -26,7 +26,7 @@ TEST(TestesIndividuais, TesteLeituraGrafo){
  * um grafo inconsistente, depois testa
  * sua consistencia */ 
   try{
-    pGrafo Inconsistente = OP_LerGrafo(GrafoInconsistente); 
+    pGrafo Inconsistente = OP_LerGrafo(szGrafoInconsistente); 
   ASSERT_TRUE(OP_EhGrafoValido(Inconsistente) == true);
   ASSERT_TRUE(OP_TemReqCircular(Inconsistente) == true);
   }
@@ -37,11 +37,11 @@ TEST(TestesIndividuais, TesteLeituraGrafo){
 /* testa a leitura de um .txt que contem 
  * um grafo invalido */ 
 
-  char GrafoInvalido[20] = "leituraerrada.txt"; 
+  char szGrafoInvalido[20] = "leituraerrada.txt"; 
  
   bool falha = false;
   try{
-    pGrafo TarefasInvalidas = OP_LerGrafo(GrafoInvalido);
+    pGrafo TarefasInvalidas = OP_LerGrafo(szGrafoInvalido);
   }
   catch(...){
     falha = true; 
@@ -55,17 +55,17 @@ TEST(TestesIndividuais, TesteEscritaGrafo){
 /*testa a escrita para um .txt a partir  
  * de um grafo valido, depois compara o  
  * grafo arquivo gerado com o inicial */ 
-  char GrafoLeitura[20] = "leitura.txt", 
-       GrafoEscrita[20] = "escrita.txt";
+  char szGrafoLeitura[20] = "leitura.txt", 
+       szGrafoEscrita[20] = "escrita.txt";
   pGrafo Tarefas;
   try{
-    Tarefas = OP_LerGrafo(GrafoLeitura);
+    Tarefas = OP_LerGrafo(szGrafoLeitura);
   }
   catch(...){ 
     ASSERT_TRUE(0); 
   }
   try{
-    OP_SalvarGrafo(Tarefas, GrafoEscrita); 
+    OP_SalvarGrafo(Tarefas, szGrafoEscrita); 
   }
   catch(...){
     ASSERT_TRUE(0);
@@ -75,9 +75,9 @@ TEST(TestesIndividuais, TesteEscritaGrafo){
 TEST(TestesIndividuais, TesteDesalocacaoGrafo){ 
 /* testa desalocar um grafo inexistente */ 
 
-  char GrafoLeitura[20] = "leitura.txt";
-  FILE* Leitura;
-  Leitura = fopen(GrafoLeitura, "w");
+  char szGrafoLeitura[20] = "leitura.txt";
+  FILE* pLeitura;
+  pLeitura = fopen(szGrafoLeitura, "w");
 
   pGrafo Inexistente;
   bool falha = false;
@@ -95,18 +95,18 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
  * de forma bem sucedida  e se o grafo foi salvo, 
  * em seguida, tenta desalocar o grafo novamente */ 
 
-  pGrafo Tarefas = OP_LerGrafo(GrafoLeitura); 
+  pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
  
   ASSERT_TRUE( Tarefas->org != NULL); 
  
-  char GrafoEscrita[20] = "escrita.txt";
-  FILE* Escrita;
-  Escrita = fopen(GrafoEscrita, "w");
+  char szGrafoEscrita[20] = "escrita.txt";
+  FILE* pEscrita;
+  pEscrita = fopen(szGrafoEscrita, "w");
   falha = false;
   try{
-    OP_SalvarGrafo(Tarefas, GrafoEscrita);
+    OP_SalvarGrafo(Tarefas, szGrafoEscrita);
     OP_DeletarGrafo(Tarefas);
-    OP_SalvarGrafo(Tarefas, GrafoLeitura); 
+    OP_SalvarGrafo(Tarefas, szGrafoLeitura); 
   }
   catch(...){
     falha = true; 
@@ -115,7 +115,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
     ASSERT_TRUE(0);
   } 
   try{
-    Tarefas = OP_LerGrafo(GrafoEscrita); 
+    Tarefas = OP_LerGrafo(szGrafoEscrita); 
     ASSERT_TRUE( Tarefas->org != NULL);
   } 
   catch(...){ 
@@ -123,7 +123,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
   }
   falha = false;
   try{
-    OP_SalvarGrafo(Inexistente, GrafoEscrita);
+    OP_SalvarGrafo(Inexistente, szGrafoEscrita);
     OP_DeletarGrafo(Tarefas);
   }
   catch(...){
@@ -150,9 +150,9 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
     ASSERT_TRUE(0);
   }
 
-  char GrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[20] = "leitura.txt"; 
  
-  pGrafo Tarefas = OP_LerGrafo(GrafoLeitura); 
+  pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
  
   ASSERT_TRUE (Tarefas->org != NULL);
 
@@ -166,10 +166,10 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
  
 TEST(TestesIndividuais, TesteCriacaoRequisito){ 
 
-  char GrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[20] = "leitura.txt"; 
   pGrafo Tarefas;
   try{
-    Tarefas = OP_LerGrafo(GrafoLeitura); 
+    Tarefas = OP_LerGrafo(szGrafoLeitura); 
     ASSERT_TRUE(Tarefas->org != NULL); 
   }
   catch(...){
@@ -243,12 +243,9 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
 /* tenta criar um requisito válido, e verifica
  * se o número de requisitos mudou */
 
-//  int NumReq = Tarefas/*AIJUSNDJJAJIDIUJAS*/;
   try{
     OP_CriarRequisito(Tarefas, 5, 3);
   }
-
-//  ASSERT_TRUE(Tarefas/*AJSDNJASNJDNJASJN*/ == NumReq+1);
 
   catch(...){ 
     ASSERT_TRUE(0); 
@@ -257,8 +254,8 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
  
 TEST(TestesIndividuais, TesteExclusaoRequisito){ 
 
-  char GrafoLeitura[20] = "leitura.txt"; 
-  pGrafo Tarefas = OP_LerGrafo(GrafoLeitura); 
+  char szGrafoLeitura[20] = "leitura.txt"; 
+  pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
   ASSERT_TRUE(Tarefas->org != NULL);
 
 /* tenta excluir um requisito com
@@ -304,12 +301,9 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
  * se o numero de requisitos foi modificado
  * corretamente */
 
-//  int NumReq = Tarefas/*aijnduhaiuhdsiuani*/
   try{ 
     OP_ExcluirRequisito(Tarefas, 1, 4);
   }
-
-//  ASSERT_TRUE(NumReq == Tarefas/*uijasihudhuinasduh*/+1);
 
   catch(...){ 
     ASSERT_TRUE(0); 
@@ -318,10 +312,10 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
  
 TEST(TestesIndividuais, TesteCriacaoTarefa){ 
  
-  char GrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[20] = "leitura.txt"; 
   pGrafo Tarefas;
   try{
-    Tarefas = OP_LerGrafo(GrafoLeitura); 
+    Tarefas = OP_LerGrafo(szGrafoLeitura); 
     ASSERT_TRUE(Tarefas->org != NULL); 
   }
   catch(...){ 
@@ -331,8 +325,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa com ID repetido */ 
   tpElementoGrafo IdRepetido; 
   IdRepetido.id = 1;
-  char NomeQualquer[100] = "NomeQualquer";
-  strcpy(IdRepetido.szNome, NomeQualquer); 
+  char szNomeQualquer[100] = "NomeQualquer";
+  strcpy(IdRepetido.szNome, szNomeQualquer); 
   IdRepetido.executado = false; 
   IdRepetido.tempoDuracao = 12; 
   IdRepetido.tempoInicMin = 10; 
@@ -351,8 +345,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa com nome repetido */ 
   tpElementoGrafo NomeRepetido; 
   NomeRepetido.id = 33122; 
-  char Repetido[100] = "NomeRepetido";
-  strcpy(NomeRepetido.szNome, Repetido); 
+  char szRepetido[100] = "NomeRepetido";
+  strcpy(NomeRepetido.szNome, szRepetido); 
   NomeRepetido.executado = true; 
   NomeRepetido.tempoDuracao = 2; 
   NomeRepetido.tempoInicMin = 0; 
@@ -367,8 +361,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa com duracao impossivel */ 
   tpElementoGrafo DuracaoImpossivel; 
   DuracaoImpossivel.id = 18322;
-  char Abacate[100] = "Abacate";  
-  strcpy(DuracaoImpossivel.szNome, Abacate); 
+  char szAbacate[100] = "Abacate";  
+  strcpy(DuracaoImpossivel.szNome, szAbacate); 
   DuracaoImpossivel.executado = true; 
   DuracaoImpossivel.tempoDuracao = -1; 
   DuracaoImpossivel.tempoInicMin = 2; 
@@ -386,8 +380,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa com inicio impossivel */ 
   tpElementoGrafo InicioImpossivel; 
   InicioImpossivel.id = 193991;
-  char Banana[100] = "Banana";
-  strcpy(InicioImpossivel.szNome, Banana); 
+  char szBanana[100] = "Banana";
+  strcpy(InicioImpossivel.szNome, szBanana); 
   InicioImpossivel.executado = false; 
   InicioImpossivel.tempoDuracao = 1; 
   InicioImpossivel.tempoInicMin = -3; 
@@ -407,8 +401,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
  * de requisitos */ 
   tpElementoGrafo RequisitosImpossiveis; 
   RequisitosImpossiveis.id = 2872;
-  char Limao[100] = "Limao";
-  strcpy(RequisitosImpossiveis.szNome, Limao); 
+  char szLimao[100] = "Limao";
+  strcpy(RequisitosImpossiveis.szNome, szLimao); 
   RequisitosImpossiveis.executado = true; 
   RequisitosImpossiveis.tempoDuracao = 2; 
   RequisitosImpossiveis.tempoInicMin = 2; 
@@ -427,8 +421,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa valida sem requisitos */ 
   tpElementoGrafo TarefaSemReq; 
   TarefaSemReq.id = 12341;
-  char Inserido[100] = "Inserido";
-  strcpy(TarefaSemReq.szNome, Inserido); 
+  char szInserido[100] = "Inserido";
+  strcpy(TarefaSemReq.szNome, szInserido); 
   TarefaSemReq.executado = false; 
   TarefaSemReq.tempoDuracao = 12; 
   TarefaSemReq.tempoInicMin = 3; 
@@ -443,8 +437,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 /* Tenta criar uma tarefa valida com requisitos */ 
   tpElementoGrafo TarefaComReq; 
   TarefaComReq.id = 1111;
-  char Oito[100] = "Oito";
-  strcpy(TarefaComReq.szNome, Oito); 
+  char szOito[100] = "Oito";
+  strcpy(TarefaComReq.szNome, szOito); 
   TarefaComReq.executado = false; 
   TarefaComReq.tempoDuracao = 2; 
   TarefaComReq.tempoInicMin = 2; 
@@ -464,8 +458,8 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
  
 TEST(TestesIndividuais, TesteExclusaoTarefa){ 
  
-  char GrafoLeitura[20] = "leitura.txt";
-  pGrafo Tarefas = OP_LerGrafo(GrafoLeitura); 
+  char szGrafoLeitura[20] = "leitura.txt";
+  pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
   ASSERT_TRUE(Tarefas->org != NULL); 
 
 /* tenta excluir uma tarefa inexistente */
@@ -502,10 +496,10 @@ TEST(TestesIndividuais, TesteExclusaoTarefa){
  
 TEST(TestesIndividuais, TesteEdicaoTarefa){ 
 
-  char GrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[20] = "leitura.txt"; 
   pGrafo Tarefas;
   try{
-    Tarefas = OP_LerGrafo(GrafoLeitura); 
+    Tarefas = OP_LerGrafo(szGrafoLeitura); 
     ASSERT_TRUE(Tarefas->org != NULL);
   }
   catch(...){ 
@@ -534,10 +528,10 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
 
 /* tenta editar o nome de uma tarefa inexistente */
 
-  char novoNome[10] = "novoNome";
+  char sznovoNome[10] = "novoNome";
   falha = false;
   try{
-    OP_EditarNome(Tarefas, 7, novoNome);
+    OP_EditarNome(Tarefas, 7, sznovoNome);
   }
   catch(...){
     falha = true; 
@@ -548,7 +542,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
 
 /* tenta editar o nome de uma tarefa existente */
   try{
-    OP_EditarNome(Tarefas, 2, novoNome);
+    OP_EditarNome(Tarefas, 2, sznovoNome);
   }
   catch(...){
     ASSERT_TRUE(0);
@@ -652,9 +646,9 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
 
   pGrafo Tarefas;
 
-  char GrafoLeitura[20] = "leitura.txt";
+  char szGrafoLeitura[20] = "leitura.txt";
   try{
-    Tarefas = OP_LerGrafo(GrafoLeitura);
+    Tarefas = OP_LerGrafo(szGrafoLeitura);
     ASSERT_TRUE(Tarefas->org != NULL);
   }
   catch(...){ 
@@ -697,9 +691,9 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
  
 TEST(TestesIndividuais, TesteTarefasCompletadas){ 
 
-  char GrafoLeitura[20] = "leitura.txt";
+  char szGrafoLeitura[20] = "leitura.txt";
   try{
-    pGrafo Tarefas = OP_LerGrafo(GrafoLeitura);
+    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
     ASSERT_TRUE(Tarefas->org != NULL);
   }
   catch(...){ 
