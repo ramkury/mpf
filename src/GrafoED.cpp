@@ -197,9 +197,9 @@
 
    }
 
-   void      ED_EditarNome(tpElementoGrafo * pTarefa, char *novoNome){
+   void      ED_EditarNome(tpElementoGrafo * pTarefa, char * novoNome){
  
-      strcpy(novoNome, pTarefa->szNome);
+      strcpy(pTarefa->szNome, novoNome);
 
    }
 

@@ -135,7 +135,8 @@
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
-      tpElementoGrafo *pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
+      tpElementoGrafo *pTarefa;
+      pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
       if(pTarefa == NULL){ // assertiva
          throw TS_ExcecaoIdTrfInval; //EXCEPTION ID_TAREFA_INVALIDO
