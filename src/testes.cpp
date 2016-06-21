@@ -665,7 +665,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
  * inexistente */
   bool falha = false;
   try{
-    OP_CalcularTempMinExec(Tarefas, 8);
+    OP_CalcularTempoMinExec(Tarefas, 8);
   }
   catch(...){
     falha = true; 
@@ -677,7 +677,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
 /* testa o valor de retorno de uma tarefa
  * sem pré-requisitos */
   try{
-    int TempMin = OP_CalcularTempMinExec(Tarefas, 2);
+    int TempMin = OP_CalcularTempoMinExec(Tarefas, 2);
     ASSERT_TRUE(TempMin == 9);
   }
   catch(...){ 
@@ -687,7 +687,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
 /* testa o valor de retorno de uma tarefa
  * com pré-requisitos*/
   try{
-    int TempMin = OP_CalcularTempMinExec(Tarefas, 1);
+    int TempMin = OP_CalcularTempoMinExec(Tarefas, 1);
     ASSERT_TRUE(TempMin == 20);
   }
   catch(...){
