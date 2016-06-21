@@ -417,3 +417,32 @@
       return false; // nada foi encontrado
 
    }
+
+   void   OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual){
+
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva de entrada
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
+      }
+
+      if(tempoAtual < 0){ // assertiva de entrada
+         throw TS_ExcecaoTmpNgtv; //EXCEPTION TEMPO_NEGATIVO
+      }
+
+      tpElementoGrafo * pTarefa;
+      pTarefa = pCabeca->org;
+
+      while(pTarefa != null){
+
+         if(ED_CalcularTempoMinExec(pCabeca, pTarefa->id) < tempoAtual){
+            ED_EditarEstadoExec(pTarefa, true);
+         }else{
+            ED_EditarEstadoExec(pTarefa, false);
+         }
+
+         pTarefa = pTarefa->prox;
+
+      }
+
+      pCabeca->tempo = tempoAtual;
+
+   }
