@@ -1,11 +1,11 @@
 IDIR =../include
 CXX=g++
-CXXFLAGS=-I$(IDIR)
+CXXFLAGS=-I$(IDIR) -g
 
 ODIR= ./obj
 
-LIBS= -g -lncurses
-LIBS_T = -lgtest -lpthread -lgtest_main -g -lncurses
+LIBS= -lncurses
+LIBS_T = -lgtest -lpthread -lgtest_main
 LIBS_C = -ftest-coverage -fprofile-arcs
 
 _DEPS = GrafoED.h GrafoOp.h
@@ -15,15 +15,15 @@ _OBJ = GrafoED.o GrafoOp.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.cpp $(DEPS)
-	$(CXX) $(LIBS) $(CXXFLAGS) -c -o $@ $<  
+	$(CXX) -c -o $@ $< $(CXXFLAGS) $(LIBS) $(LIBS_T)
 
 main: $(OBJ)
-	$(CXX) $(LIBS) $(CXXFLAGS) -o gerenciador main.cpp $(OBJ) 
+	$(CXX) -o gerenciador main.cpp $(OBJ) $(CXXFLAGS) $(LIBS)
 
 .PHONY: teste
 
 teste: $(OBJ)
-	$(CXX) $(LIBS_T) $(CXXFLAGS) -o teste testes.cpp $(OBJ)
+	$(CXX) -o teste testes.cpp $(OBJ) $(CXXFLAGS) $(LIBS) $(LIBS_T) 
 
 .PHONY: clean
 
