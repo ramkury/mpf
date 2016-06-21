@@ -56,7 +56,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 */
-   int    OP_CalcularTempMinExec(pGrafo, unsigned int);
+   int    OP_CalcularTempoMinExec(pGrafo, unsigned int);
 
 /** @fn void  OP_EditarId(pGrafo, unsigned int, unsigned int)
 *   @brief Edita o Id da tarefa.
