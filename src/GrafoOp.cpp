@@ -43,6 +43,7 @@
          pTarefa->prox         = NULL;
 
          if(!OP_EhTarefaValida(pCabeca, pTarefa)){ // assertiva estrutural
+            fclose(arq);
             throw TS_ExcecaoTrfInval; //EXCEPTION TAREFA_INVALIDA
          }
 
@@ -62,9 +63,11 @@
 
       OP_VerificarReq(pCabeca);
       if(OP_TemReqCircular(pCabeca)){
+         fclose(arq);
          throw TS_ExcecaoReqCirc; //EXCEPTION REQUISITOS_CIRCULARES_GRAFO_INCONSISTENTE
       }
 
+      fclose(arq);
       return pCabeca;
   
    }
@@ -78,11 +81,12 @@
       }
 
       if(!OP_EhGrafoValido(pCabeca)){ // assertiva
+         fclose(arq);
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       ED_GravarGrafo(pCabeca, arq);
-
+      fclose(arq);
   }
 
    void   OP_DeletarGrafo(pGrafo pCabeca){
