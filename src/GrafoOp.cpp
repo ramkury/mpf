@@ -24,7 +24,7 @@
       fgets(szLinha, 1000, arq);
       while(!feof(arq)){ // tenta ler id e já colocar na tarefa
 
-         pTarefa = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+         pTarefa = (tpElementoGrafo *)calloc(sizeof(tpElementoGrafo), 1);
 
          szCampoAtual = strtok(szLinha, szSeparadores);
          pTarefa->id  = atoi(szCampoAtual);
@@ -77,7 +77,7 @@
        throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
       }
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -97,7 +97,7 @@
 
    int    OP_CalcularTempoMinExec(pGrafo pCabeca, unsigned int idTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva de entrada
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva de entrada
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -111,7 +111,7 @@
 
    void   OP_EditarId(pGrafo pCabeca, unsigned int idTarefa, unsigned int novoIdTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -131,7 +131,7 @@
 
    void   OP_EditarNome(pGrafo pCabeca, unsigned int idTarefa, char * novoNome){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -147,7 +147,7 @@
 
    void   OP_EditarEstadoExec(pGrafo pCabeca, unsigned int idTarefa, bool estadoExec){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -163,7 +163,7 @@
 
    void   OP_EditarDuracao(pGrafo pCabeca, unsigned int idTarefa, int novoTempoDuracao){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -183,7 +183,7 @@
 
    void   OP_EditarInicMin(pGrafo pCabeca, unsigned int idTarefa, int novoTempoInicMin){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -203,7 +203,7 @@
 
    void   OP_ExcluirTarefa(pGrafo pCabeca, unsigned int idTarefa){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -242,7 +242,7 @@
       }
 
       tpElementoGrafo * pTarefa;
-      pTarefa   = (tpElementoGrafo *)malloc(sizeof(tpElementoGrafo));
+      pTarefa   = (tpElementoGrafo *)calloc(1, sizeof(tpElementoGrafo));
       * pTarefa = tarefa;
       pTarefa->qtdPreReq = 0;
       pTarefa->lstPreReq = NULL;
@@ -258,7 +258,7 @@
 
    void   OP_CriarRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -294,7 +294,7 @@
    
    void   OP_ExcluirRequisito(pGrafo pCabeca, unsigned int idTarefa, unsigned int idReq){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -328,7 +328,7 @@
 
    void   OP_VerificarReq(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -372,7 +372,7 @@
 
    bool   OP_TemOrigem(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
@@ -382,7 +382,7 @@
 
    bool   OP_TemReqCircular(pGrafo pCabeca){
 
-      if(!OP_EhGrafoValido){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 

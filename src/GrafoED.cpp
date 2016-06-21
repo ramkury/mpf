@@ -96,7 +96,7 @@
    void      ED_CriarRequisito(tpElementoGrafo * pTarefa, unsigned int idReq){
 
       tpElementoReq *pReq;
-      pReq     = (tpElementoReq *)malloc(sizeof(tpElementoReq));
+      pReq     = (tpElementoReq *)calloc(1, sizeof(tpElementoReq));
       pReq->id = idReq;
 
       if(pTarefa->lstPreReq != NULL){
