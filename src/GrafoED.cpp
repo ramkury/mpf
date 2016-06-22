@@ -89,6 +89,7 @@
          ED_DestruirTarefas(pCabeca->org);
       }
 
+
       free(pCabeca);
 
    }
