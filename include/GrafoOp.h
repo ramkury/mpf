@@ -159,4 +159,11 @@
 */
     bool   OP_TemReqCircular(pGrafo);
 
+/** @fn bool OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual)
+*   @brief Atualiza o tempo em que o grafo se encontra.
+*   @param ponteiro para cabeça do grafo
+*   @param inteiro com o tempo desejado para o grafo ser atualizado
+*/
+    void   OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual);
+
 #endif

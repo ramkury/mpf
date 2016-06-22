@@ -43,6 +43,7 @@
          pTarefa->prox         = NULL;
 
          if(!OP_EhTarefaValida(pCabeca, pTarefa)){ // assertiva estrutural
+            fclose(arq);
             throw TS_ExcecaoTrfInval; //EXCEPTION TAREFA_INVALIDA
          }
 
@@ -62,9 +63,11 @@
 
       OP_VerificarReq(pCabeca);
       if(OP_TemReqCircular(pCabeca)){
+         fclose(arq);
          throw TS_ExcecaoReqCirc; //EXCEPTION REQUISITOS_CIRCULARES_GRAFO_INCONSISTENTE
       }
 
+      fclose(arq);
       return pCabeca;
   
    }
@@ -78,11 +81,12 @@
       }
 
       if(!OP_EhGrafoValido(pCabeca)){ // assertiva
+         fclose(arq);
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
 
       ED_GravarGrafo(pCabeca, arq);
-
+      fclose(arq);
   }
 
    void   OP_DeletarGrafo(pGrafo pCabeca){
@@ -411,5 +415,34 @@
       }
 
       return false; // nada foi encontrado
+
+   }
+
+   void   OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual){
+
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva de entrada
+         throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
+      }
+
+      if(tempoAtual < 0){ // assertiva de entrada
+         throw TS_ExcecaoTmpNgtv; //EXCEPTION TEMPO_NEGATIVO
+      }
+
+      tpElementoGrafo * pTarefa;
+      pTarefa = pCabeca->org;
+
+      while(pTarefa != null){
+
+         if(ED_CalcularTempoMinExec(pCabeca, pTarefa->id) < tempoAtual){
+            ED_EditarEstadoExec(pTarefa, true);
+         }else{
+            ED_EditarEstadoExec(pTarefa, false);
+         }
+
+         pTarefa = pTarefa->prox;
+
+      }
+
+      pCabeca->tempo = tempoAtual;
 
    }
