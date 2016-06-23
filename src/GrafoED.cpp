@@ -300,17 +300,28 @@
 
       tpElementoReq * pReqTemp;
       int tempo;
-      pReqTemp = pTarefa->lstPreReq;
-      tempo    = 0;
+      int tempoTemp;
+      pReqTemp  = pTarefa->lstPreReq;
+      tempo     = 0;
+      tempoTemp = 0;
 
       while(pReqTemp != NULL){
 
-         tempo = tempo + ED_CalcularTempoMinExec(pCabeca, pReqTemp->id);
+         tempoTemp = ED_CalcularTempoMinExec(pCabeca, pReqTemp->id);
+
+         if(tempo < tempoTemp){
+            tempo = tempoTemp;
+         }
+
          pReqTemp = pReqTemp->prox;
 
       }
 
-      return tempo;
+      if(tempo >= pTarefa->tempoInicMin){
+         return (tempo + pTarefa->tempoDuracao);
+      }else{
+         return (pTarefa->tempoDuracao + pTarefa->tempoInicMin);
+      }
 
    }
 
