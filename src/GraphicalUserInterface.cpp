@@ -28,6 +28,7 @@ void UI_InicializaGUI() {
     itensMenuEditar.push_back("Adicionar requisito");
     itensMenuEditar.push_back("Remover requisito");
     itensMenuEditar.push_back("Excluir tarefa");
+    itensMenuEditar.push_back("Exibir lista de pre requisitos");
     itensMenuEditar.push_back("Voltar");
 
     itensMenuConfirmacao.push_back("Nao");
@@ -310,6 +311,9 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
             case 7: //Excluir tarefa
                 UI_ExcluirTarefa(grafo, tarefa);
                 break;
+            case 8: //Mostrar pré requisitos
+                UI_ListaPreReq(tarefa);
+                break;
         }
     }
 }
@@ -464,6 +468,29 @@ void UI_DefinirTempo(pGrafo grafo) {
             throw e;
         }
     }
+}
+
+void UI_ListaPreReq(tpElementoGrafo *tarefa) {
+	tpElementoReq * preReqAtual;
+    WINDOW * hwndPreReq;
+    int lin;
+    hwndPreReq = UI_CriaJanelaEntrada("Lista de pre requisitos (ID)", cores_padrao);
+    if (tarefa->qtdPreReq == 0) {
+        wattron(hwndPreReq, A_BOLD);
+        mvwprintw(hwndPreReq, 3, 2, "A tarefa '%s' nao possui nenhum pre requisito.", tarefa->szNome);
+    }
+    else {
+        lin = 3;
+        preReqAtual = tarefa->lstPreReq;
+        while(preReqAtual != NULL) {
+            mvwprintw(hwndPreReq, lin++, 2, "%u", preReqAtual->id);
+            preReqAtual = preReqAtual->prox;
+        }
+    }
+
+    wgetch(hwndPreReq);
+    delwin(hwndPreReq);
+
 }
 
 #undef NLINES

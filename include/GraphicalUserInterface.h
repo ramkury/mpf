@@ -43,7 +43,7 @@ void UI_LeEntradaTexto(std::string titulo, char *szEntrada);
  * @param itensMenu opções que podem ser escolhidas pelo usuário
  * @return índice da opção selecionada pelo usuário (contagem começando em 0)
  */
-unsigned int    UI_SelecionaOpcao(std::string titulo, std::vector<std::string> itensMenu);
+unsigned int UI_SelecionaOpcao(std::string titulo, std::vector<std::string> itensMenu);
 
 /**
  * Mostra mensagem na tela e aguarda o usuário pressionar uma tecla
@@ -175,5 +175,12 @@ void UI_EscreverGrafo(pGrafo grafo);
  * @param grafo Grafo a ser atualizado de acordo com o tempo escolhido
  */
 void UI_DefinirTempo(pGrafo grafo);
+
+/**
+ * Abre uma janela e mostra os IDs de todos os pre requisitos da tarefa. Caso a tarefa não
+ * possua pré requisitos, mostra uma mensagem para o usuário.
+ * @param tarefa Tarefa cujos pre requisitos são listados.
+ */
+void UI_ListaPreReq(tpElementoGrafo *tarefa);
 
 #endif
