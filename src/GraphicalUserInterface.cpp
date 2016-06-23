@@ -42,7 +42,7 @@ void UI_InicializaGUI() {
 
     /* Inicializa cores que serão utilizadas na interface */
     init_pair(cores_padrao, COLOR_WHITE, COLOR_BLACK);
-    init_pair(cores_menu, COLOR_WHITE, COLOR_CYAN);
+    init_pair(cores_menu, COLOR_WHITE, COLOR_BLUE);
     init_pair(cores_nao_concluido,COLOR_WHITE,COLOR_RED);
     init_pair(cores_concluido,COLOR_WHITE,COLOR_GREEN);
     init_pair(cores_erro,COLOR_WHITE,COLOR_RED);
