@@ -28,6 +28,7 @@ void UI_InicializaGUI() {
     itensMenuEditar.push_back("Adicionar requisito");
     itensMenuEditar.push_back("Remover requisito");
     itensMenuEditar.push_back("Excluir tarefa");
+    itensMenuEditar.push_back("Exibir lista de pre requisitos");
     itensMenuEditar.push_back("Voltar");
 
     itensMenuConfirmacao.push_back("Nao");
@@ -41,14 +42,15 @@ void UI_InicializaGUI() {
 
     /* Inicializa cores que serão utilizadas na interface */
     init_pair(cores_padrao, COLOR_WHITE, COLOR_BLACK);
-    init_pair(cores_menu, COLOR_WHITE, COLOR_GREEN);
+    init_pair(cores_menu, COLOR_WHITE, COLOR_BLUE);
     init_pair(cores_nao_concluido,COLOR_WHITE,COLOR_RED);
     init_pair(cores_concluido,COLOR_WHITE,COLOR_GREEN);
     init_pair(cores_erro,COLOR_WHITE,COLOR_RED);
 
     bkgd(COLOR_PAIR(cores_padrao));
 
-
+    mvprintw(NLINES+5, 2, "Pressione enter para editar a tarefa selecionada ou M para abrir o menu.");
+    refresh();
 }
 
 void UI_LeEntradaTexto(string titulo, char *szEntrada) {
@@ -85,7 +87,7 @@ unsigned int    UI_SelecionaOpcao(string titulo, vector<string> itensMenu) {
         else {
             wattroff(hwndMenu, A_STANDOUT);
         }
-        sprintf(szTemp, "%-10s", itensMenu.at(inx).c_str());
+        sprintf(szTemp, "%s", itensMenu.at(inx).c_str());
         mvwprintw(hwndMenu, inx + LN_OFFSET, 1, szTemp);
     }
 
@@ -157,7 +159,7 @@ tpElementoGrafo* UI_ListaTarefas(pGrafo grafo) {
     WINDOW *hwndLista = UI_CriaJanelaEntrada("Lista de tarefas", cores_padrao);
     keypad(hwndLista, true);
     curs_set(0);
-    noecho();
+    noecho();   
 
     elemAtual = grafo->org;
     while(elemAtual != NULL) { //adiciona todas as tarefas no vector v
@@ -198,7 +200,11 @@ tpElementoGrafo* UI_ListaTarefas(pGrafo grafo) {
                 inx = (inx >= v.size() - 1 ? 0 : inx + 1);
                 UI_ImprimeTarefa(hwndLista, v.at(inx), inx+LN_OFFSET, true);
                 break;
-            default:
+            case 'M':
+            case 'm':
+                delwin(hwndLista);
+                return NULL;
+            case '\n':
                 shouldRebuildList = true;
         }
     } while(!shouldRebuildList);
@@ -304,6 +310,9 @@ void UI_EditarTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
                 break;
             case 7: //Excluir tarefa
                 UI_ExcluirTarefa(grafo, tarefa);
+                break;
+            case 8: //Mostrar pré requisitos
+                UI_ListaPreReq(tarefa);
                 break;
         }
     }
@@ -435,6 +444,53 @@ void UI_ExcluirTarefa(pGrafo grafo, tpElementoGrafo *tarefa) {
     if (selecaoUsuario == 1) {
         OP_ExcluirTarefa(grafo, tarefa->id);
     }
+}
+
+void UI_EscreverGrafo(pGrafo grafo) {
+    char szEntradaUsuario[100];
+
+    UI_LeEntradaTexto("Digite o nome do arquivo a ser escrito", szEntradaUsuario);
+    OP_SalvarGrafo(grafo, szEntradaUsuario);
+}
+
+void UI_DefinirTempo(pGrafo grafo) {
+    char szEntradaUsuario[100];
+    int tempo;
+
+    UI_LeEntradaTexto("Digite o novo tempo", szEntradaUsuario);
+    tempo = atoi(szEntradaUsuario);
+    try {
+        OP_AtualizarGrafo(grafo, tempo);
+    } catch(TS_Execao e) {
+        if (e == TS_ExcecaoTmpNgtv) {
+            UI_MostraMsg("Erro", "O tempo nao pode ser negativo!", cores_erro);
+        } else {
+            throw e;
+        }
+    }
+}
+
+void UI_ListaPreReq(tpElementoGrafo *tarefa) {
+	tpElementoReq * preReqAtual;
+    WINDOW * hwndPreReq;
+    int lin;
+    hwndPreReq = UI_CriaJanelaEntrada("Lista de pre requisitos (ID)", cores_padrao);
+    if (tarefa->qtdPreReq == 0) {
+        wattron(hwndPreReq, A_BOLD);
+        mvwprintw(hwndPreReq, 3, 2, "A tarefa '%s' nao possui nenhum pre requisito.", tarefa->szNome);
+    }
+    else {
+        lin = 3;
+        preReqAtual = tarefa->lstPreReq;
+        while(preReqAtual != NULL) {
+            mvwprintw(hwndPreReq, lin++, 2, "%u", preReqAtual->id);
+            preReqAtual = preReqAtual->prox;
+        }
+    }
+
+    wgetch(hwndPreReq);
+    delwin(hwndPreReq);
+
 }
 
 #undef NLINES

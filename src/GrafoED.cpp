@@ -89,6 +89,7 @@
          ED_DestruirTarefas(pCabeca->org);
       }
 
+
       free(pCabeca);
 
    }
@@ -197,9 +198,9 @@
 
    }
 
-   void      ED_EditarNome(tpElementoGrafo * pTarefa, char *novoNome){
+   void      ED_EditarNome(tpElementoGrafo * pTarefa, char * novoNome){
  
-      strcpy(novoNome, pTarefa->szNome);
+      strcpy(pTarefa->szNome, novoNome);
 
    }
 
@@ -289,9 +290,9 @@
       tpElementoGrafo * pTarefa;
       pTarefa = ED_EhIdExistente(pCabeca, idTarefa);
 
-      if(pTarefa->executado){
-         return 0;
-      }
+      //if(pTarefa->executado){
+        // return 0;
+      //}
 
       if(pTarefa->qtdPreReq == 0){
          return (pTarefa->tempoInicMin + pTarefa->tempoDuracao);
@@ -336,4 +337,5 @@
       }
 
       return false; // passou por tudo e retornou sem caminhos, então, eles não existem
+   
    }

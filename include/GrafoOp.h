@@ -56,7 +56,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 */
-   int    OP_CalcularTempMinExec(pGrafo, unsigned int);
+   int    OP_CalcularTempoMinExec(pGrafo, unsigned int);
 
 /** @fn void  OP_EditarId(pGrafo, unsigned int, unsigned int)
 *   @brief Edita o Id da tarefa.
@@ -158,5 +158,12 @@
 *   @param ponteiro para cabeça do grafo
 */
     bool   OP_TemReqCircular(pGrafo);
+
+/** @fn bool OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual)
+*   @brief Atualiza o tempo em que o grafo se encontra.
+*   @param ponteiro para cabeça do grafo
+*   @param inteiro com o tempo desejado para o grafo ser atualizado
+*/
+    void   OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual);
 
 #endif

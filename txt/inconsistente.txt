@@ -1,0 +1,8 @@
+1 'NomeRepetido' 0 11 4 4 2 3 4 5 
+2 'ahsd jask kka k' 0 9 0 0 
+3 'o    o' 1 2 2 0 
+4 'p' 1 1 0 0 
+999 'ijasjid' 1 1 1 0 
+5 '00_a-sa_ _p' 0 4 0 2 6 7
+6 'o' 0 1 0 1 4
+7 'lol' 0 1 0 2 7 3
