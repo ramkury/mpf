@@ -37,22 +37,6 @@ TEST(TestesIndividuais, TesteLeituraGrafo){
   if(!falha){
     ASSERT_TRUE(0);
   }*/
- 
-/* testa a leitura de um .txt que contem 
- * um grafo invalido */ 
-
-  char szGrafoInvalido[] = "../txt/leituraerrada.txt"; 
- 
-    falha = false;
-    try{
-        pGrafo TarefasInvalidas = OP_LerGrafo(szGrafoInvalido);
-    }
-    catch(...){
-        falha = true; 
-    } 
-    if(!falha){
-        ASSERT_TRUE(0);
-    }
 }
  
 TEST(TestesIndividuais, TesteEscritaGrafo){ 

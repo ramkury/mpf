@@ -60,7 +60,7 @@
          fgets(szLinha, 1000, arq);
 
       }
-
+      
       OP_VerificarReq(pCabeca);
       if(OP_TemReqCircular(pCabeca)){
          fclose(arq);
@@ -431,7 +431,7 @@
       tpElementoGrafo * pTarefa;
       pTarefa = pCabeca->org;
 
-      while(pTarefa != null){
+      while(pTarefa != NULL){
 
          if(ED_CalcularTempoMinExec(pCabeca, pTarefa->id) < tempoAtual){
             ED_EditarEstadoExec(pTarefa, true);
