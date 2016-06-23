@@ -4,41 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
  
- 
-TEST(TestesIndividuais, TesteLeituraGrafo){
-/* testa a leitura de um .txt que contem 
- * um grafo consistente, depois testa
- * sua consistencia */
-
-  bool falha = false;
-
-  char szGrafoLeitura[] = "../txt/leitura.txt";
-       //szGrafoInconsistente[] = "../txt/inconsistente.txt";
-    
-  try{
-    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
-    ASSERT_TRUE(OP_EhGrafoValido(Tarefas));
-    ASSERT_FALSE(OP_TemReqCircular(Tarefas));
-  }
-  catch(...){ 
-    ASSERT_TRUE(0); 
-  }
-
-/* testa a leitura de um .txt que contem 
- * um grafo inconsistente, depois testa
- * sua consistencia */ 
- 
-  /*try{
-    pGrafo Inconsistente = OP_LerGrafo(szGrafoInconsistente);
-  }
-  catch(...){
-    falha = true;
-  } 
-  if(!falha){
-    ASSERT_TRUE(0);
-  }*/
-}
- 
 TEST(TestesIndividuais, TesteEscritaGrafo){ 
 /*testa a escrita para um .txt a partir  
  * de um grafo valido, depois compara o  
@@ -154,6 +119,27 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
   catch(...){ 
     ASSERT_TRUE(0); 
   }
+}
+
+TEST(TestesIndividuais, TesteLeituraGrafo){
+/* testa a leitura de um .txt que contem 
+ * um grafo consistente, depois testa
+ * sua consistencia */
+
+  bool falha = false;
+
+  char szGrafoLeitura[] = "../txt/leitura.txt",
+       szGrafoInconsistente[] = "../txt/inconsistente.txt";
+    
+  try{
+    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
+    ASSERT_TRUE(OP_EhGrafoValido(Tarefas));
+    ASSERT_FALSE(OP_TemReqCircular(Tarefas));
+  }
+  catch(...){ 
+    ASSERT_TRUE(0); 
+  }
+
 }
 
 TEST(TestesIndividuais, TesteCriacaoRequisito){ 

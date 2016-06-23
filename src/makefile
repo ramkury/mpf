@@ -23,7 +23,7 @@ main: $(OBJ)
 .PHONY: teste
 
 teste: $(OBJ)
-	$(CXX) -o teste testes.cpp $(OBJ) $(CXXFLAGS) $(LIBS) $(LIBS_T) 
+	$(CXX) -o teste testes.cpp $(OBJ) $(CXXFLAGS) $(LIBS) $(LIBS_T) $(LIBS_C)
 
 .PHONY: clean
 
