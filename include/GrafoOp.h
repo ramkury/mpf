@@ -9,15 +9,15 @@
 */
 
 /** @enum TS_Excecao
-*	@brief Enumeration que agrupa as exeções previstas nas assertivas de GrafoOp.h.
-*	@var TS_ExcecaoFlhFopen Reporta falha na função fopen
-*	@var TS_ExcecaoTrfInval Reporta que a tarefa é inválida
-*	@var TS_ExcecaoReqCirc Reporta que um requisito circular foi encontrado
-*	@var TS_ExcecaoGrafoInval Reporta que um grafo inválido foi passado de parâmetro
-*	@var TS_ExcecaoIdJahExiste Reporta que o novo id já existe
-*	@var TS_ExcecaoIdTrfInval Reporta que o Id da tarefa é inválido
-*	@var TS_ExcecaoDurNgtv Reporta que a duração fornecida é negativa
-*	@var TS_ExcecaoTmpNgtv Reporta que o tempo mínimo fornecido é negativo
+*   @brief Enumeration que agrupa as exeções previstas nas assertivas de GrafoOp.h.
+*   @var TS_ExcecaoFlhFopen Reporta falha na função fopen
+*   @var TS_ExcecaoTrfInval Reporta que a tarefa é inválida
+*   @var TS_ExcecaoReqCirc Reporta que um requisito circular foi encontrado
+*   @var TS_ExcecaoGrafoInval Reporta que um grafo inválido foi passado de parâmetro
+*   @var TS_ExcecaoIdJahExiste Reporta que o novo id já existe
+*   @var TS_ExcecaoIdTrfInval Reporta que o Id da tarefa é inválido
+*   @var TS_ExcecaoDurNgtv Reporta que a duração fornecida é negativa
+*   @var TS_ExcecaoTmpNgtv Reporta que o tempo mínimo fornecido é negativo
 *   @var TS_ExcecaoIdReqInval Reporta que o Id do requisito é inválido
 */
 	enum TS_Execao{
@@ -32,9 +32,12 @@
 		TS_ExcecaoIdReqInval,
 	};
 
+
+
 /** @fn pGrafo OP_LerGrafo(char *)
 *   @brief A partir de um arquivo .txt gera o grafo do gerenciador.
 *   @param string com o nome do arquivo de onde o arquivo será lido
+*   @return ponteiro para cabeça do grafo
 */
    pGrafo OP_LerGrafo(char *);
 
@@ -42,12 +45,14 @@
 *   @brief Escreve o grafo em um .txt.
 *   @param ponteiro para cabeça do grafo
 *   @param string com o nome do arquivo onde o grafo será escrito
+*   @return void
 */
    void   OP_SalvarGrafo(pGrafo, char *);
 
 /** @fn void OP_DeletarGrafo(pGrafo)
 *   @brief Deleta o grafo.
 *   @param ponteiro para cabeça do grafo
+*   @return void
 */
    void   OP_DeletarGrafo(pGrafo);
 
@@ -55,6 +60,7 @@
 *   @brief Calcula o menor tempo necessário para a tarefa ser executada.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
+*   @return void
 */
    int    OP_CalcularTempoMinExec(pGrafo, unsigned int);
 
@@ -63,6 +69,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param antigo id da tarefa
 *   @param novo id da tarefa
+*   @return void
 */
    void   OP_EditarId(pGrafo, unsigned int, unsigned int);	// verificar se novo id já não existe
 
@@ -71,6 +78,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 *   @param novo nome da tarefa
+*   @return void
 */
    void   OP_EditarNome(pGrafo, unsigned int, char *);
 
@@ -78,7 +86,8 @@
 *   @brief Edita o estado de execução da tarefa.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
-*   @param verdadeiro se a tarefa já tiver sido executada, se não, falso.
+*   @param verdadeiro se a tarefa já tiver sido executada, se não, falso
+*   @return void
 */
    void   OP_EditarEstadoExec(pGrafo, unsigned int, bool);
 
@@ -87,6 +96,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 *   @param novo tempo de execução da tarefa
+*   @return void
 */
    void   OP_EditarDuracao(pGrafo, unsigned int, int);
 
@@ -95,6 +105,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 *   @param novo tempo mínimo de espera até a tarefa poder ser executada
+*   @return void
 */
    void   OP_EditarInicMin(pGrafo, unsigned int, int);
 
@@ -102,6 +113,7 @@
 *   @brief Exclui a tarefa.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
+*   @return void
 */
    void   OP_ExcluirTarefa(pGrafo, unsigned int);
 
@@ -109,6 +121,7 @@
 *   @brief Cria a tarefa, sem a lista de requisitos (eles devem ser inseridos um a um).
 *   @param ponteiro para cabeça do grafo
 *   @param struct com as informações da tarefa
+*   @return void
 */
    void   OP_CriarTarefa(pGrafo, tpElementoGrafo); // controlar para não permitir ids repetidos
 
@@ -117,6 +130,7 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 *   @param id do requisito a ser adicionado
+*   @return void
 */
    void   OP_CriarRequisito(pGrafo, unsigned int, unsigned int);
    
@@ -125,18 +139,21 @@
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
 *   @param id do requisito a ser retirado
+*   @return void
 */
    void   OP_ExcluirRequisito(pGrafo, unsigned int, unsigned int);
 
 /** @fn bool OP_EhGrafoValido(pGrafo)
 *   @brief Verifica se o grafo é válido, função de apoio para as assertivas.
 *   @param ponteiro para cabeça do grafo
+*   @return true se o grafo for válido, false se não for válido
 */
     bool  OP_EhGrafoValido(pGrafo);
 
 /** @fn void OP_VerificarReq(pGrafo pCabeca)
 *   @brief Verifica se os pré-requisitos das funções são ids válidos e caso inválidos os exclui.
 *   @param ponteiro para cabeça do grafo
+*   @return void
 */
    void   OP_VerificarReq(pGrafo);
 
@@ -144,18 +161,21 @@
 *   @brief Verifica se a tarefa é válida, função de apoio para as assertivas.
 *   @param ponteiro para cabeça do grafo
 *   @param ponteiro para tarefa a ser validada
+*   @return true se a tarefa é válida, false se não for uma tarefa válida
 */
     bool  OP_EhTarefaValida(pGrafo, tpElementoGrafo *);
 
 /** @fn bool OP_TemOrigem(pGrafo)
 *   @brief Verifica se o grafo tem origens, ou seja, verifica a existência de tarefas sem pré-requisitos.
 *   @param ponteiro para cabeça do grafo
+*   @return true se o grafo tiver origem, false se não tiver
 */
     bool   OP_TemOrigem(pGrafo);
 
 /** @fn bool OP_TemReqCircular(pGrafo pCabeca)
 *   @brief Verifica se o grafo tem requisitos circulares, ou seja, se uma tarefa é pré-requisito de algum pré-requisito.
 *   @param ponteiro para cabeça do grafo
+*   @return true se o grafo tiver requisitos circulares, false se não tiver
 */
     bool   OP_TemReqCircular(pGrafo);
 
@@ -163,6 +183,7 @@
 *   @brief Atualiza o tempo em que o grafo se encontra.
 *   @param ponteiro para cabeça do grafo
 *   @param inteiro com o tempo desejado para o grafo ser atualizado
+*   @return void
 */
     void   OP_AtualizarGrafo(pGrafo pCabeca, int tempoAtual);
 

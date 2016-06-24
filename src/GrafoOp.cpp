@@ -80,7 +80,7 @@
        throw TS_ExcecaoFlhFopen; //EXCEPTION FALHA_FOPEN_ARQ
       }
 
-      if(!OP_EhGrafoValido(pCabeca)){ // assertiva
+      if(!OP_EhGrafoValido(pCabeca)){ // assertiva de entrada
          fclose(arq);
          throw TS_ExcecaoGrafoInval; //EXCEPTION GRAFO_INVALIDO
       }
