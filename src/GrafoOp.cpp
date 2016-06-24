@@ -60,7 +60,7 @@
          fgets(szLinha, 1000, arq);
 
       }
-
+      
       OP_VerificarReq(pCabeca);
       if(OP_TemReqCircular(pCabeca)){
          fclose(arq);

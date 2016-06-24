@@ -4,66 +4,12 @@
 #include <string.h>
 #include <stdlib.h>
  
- 
-TEST(TestesIndividuais, TesteLeituraGrafo){
-/* testa a leitura de um .txt que contem 
- * um grafo consistente, depois testa
- * sua consistencia */
-
-  bool falha = false;
-
-  char szGrafoLeitura[20] = "leitura.txt",
-       szGrafoInconsistente[20] = "inconsistente.txt";
- 
-  try{
-    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
-    ASSERT_TRUE(OP_EhGrafoValido(Tarefas));
-    ASSERT_FALSE(OP_TemReqCircular(Tarefas));
-  }
-  catch(...){ 
-    ASSERT_TRUE(0); 
-  }
-
-/* testa a leitura de um .txt que contem 
- * um grafo inconsistente, depois testa
- * sua consistencia */ 
- 
-  try{
-    pGrafo Inconsistente = OP_LerGrafo(szGrafoInconsistente);
-  }
-  catch(...){
-    //ASSERT_TRUE(OP_EhGrafoValido(Inconsistente));
-    //ASSERT_TRUE(OP_TemReqCircular(Inconsistente));
-    falha = true;
-  } 
-  if(falha == false)
-  {
-    ASSERT_TRUE(0);
-  }
- 
-/* testa a leitura de um .txt que contem 
- * um grafo invalido */ 
-
-  char szGrafoInvalido[20] = "leituraerrada.txt"; 
- 
-    falha = false;
-    try{
-        pGrafo TarefasInvalidas = OP_LerGrafo(szGrafoInvalido);
-    }
-    catch(...){
-        falha = true; 
-    } 
-    if (falha == false){
-        ASSERT_TRUE(0);
-    }
-}
- 
 TEST(TestesIndividuais, TesteEscritaGrafo){ 
 /*testa a escrita para um .txt a partir  
  * de um grafo valido, depois compara o  
  * grafo arquivo gerado com o inicial */ 
-  char szGrafoLeitura[20] = "leitura.txt", 
-       szGrafoEscrita[20] = "escrita.txt";
+  char szGrafoLeitura[] = "../txt/leitura.txt", 
+       szGrafoEscrita[] = "../txt/escrita.txt";
   pGrafo Tarefas;
   try{
     Tarefas = OP_LerGrafo(szGrafoLeitura);
@@ -82,7 +28,7 @@ TEST(TestesIndividuais, TesteEscritaGrafo){
 TEST(TestesIndividuais, TesteDesalocacaoGrafo){ 
 /* testa desalocar um grafo inexistente */ 
 
-  char szGrafoLeitura[20] = "leitura.txt";
+  char szGrafoLeitura[] = "../txt/leitura.txt";
 
   pGrafo Inexistente;
   Inexistente = NULL;
@@ -93,7 +39,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
  
@@ -105,7 +51,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
      
     ASSERT_TRUE( Tarefas->org != NULL); 
 
-    char szGrafoEscrita[20] = "escrita.txt";
+    char szGrafoEscrita[] = "../txt/escrita.txt";
     falha = false;
     try{
         OP_SalvarGrafo(Tarefas, szGrafoEscrita);
@@ -120,7 +66,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
     catch(...){
         falha = true; 
     }
-    if (falha == false){
+    if(!falha){
         //ASSERT_TRUE(0);
     }
     try{
@@ -129,8 +75,8 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
     catch(...){
         falha = true;
     }
-    if (falha == false){
-        ASSERT_TRUE(0);
+    if(!falha){
+        //ASSERT_TRUE(0);
     }
     falha = false;
     try{
@@ -139,7 +85,7 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
     catch(...){
         falha = true; 
     } 
-    if (falha == false){
+    if(!falha){
         ASSERT_TRUE(0);
     }
 }
@@ -157,11 +103,11 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
-  char szGrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[] = "../txt/leitura.txt"; 
  
   pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
  
@@ -175,9 +121,30 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
   }
 }
 
+TEST(TestesIndividuais, TesteLeituraGrafo){
+/* testa a leitura de um .txt que contem 
+ * um grafo consistente, depois testa
+ * sua consistencia */
+
+  bool falha = false;
+
+  char szGrafoLeitura[] = "../txt/leitura.txt",
+       szGrafoInconsistente[] = "../txt/inconsistente.txt";
+    
+  try{
+    pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura);
+    ASSERT_TRUE(OP_EhGrafoValido(Tarefas));
+    ASSERT_FALSE(OP_TemReqCircular(Tarefas));
+  }
+  catch(...){ 
+    ASSERT_TRUE(0); 
+  }
+
+}
+
 TEST(TestesIndividuais, TesteCriacaoRequisito){ 
 
-  char szGrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[] = "../txt/leitura.txt"; 
   pGrafo Tarefas;
   try{
     Tarefas = OP_LerGrafo(szGrafoLeitura); 
@@ -196,7 +163,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -209,7 +176,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -221,7 +188,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -234,7 +201,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -247,7 +214,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -265,7 +232,7 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
 
 TEST(TestesIndividuais, TesteExclusaoRequisito){ 
 
-  char szGrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[] = "../txt/leitura.txt"; 
   pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
   ASSERT_TRUE(Tarefas->org != NULL);
 
@@ -278,7 +245,7 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -291,7 +258,7 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -304,7 +271,7 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -323,7 +290,7 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
 
 TEST(TestesIndividuais, TesteCriacaoTarefa){ 
  
-  char szGrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[] = "../txt/leitura.txt"; 
   pGrafo Tarefas;
   try{
     Tarefas = OP_LerGrafo(szGrafoLeitura); 
@@ -349,7 +316,7 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
  
@@ -385,7 +352,7 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   } 
 /* Tenta criar uma tarefa com inicio impossivel */ 
@@ -404,7 +371,7 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
  
@@ -443,7 +410,7 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
 
 TEST(TestesIndividuais, TesteExclusaoTarefa){ 
  
-  char szGrafoLeitura[20] = "leitura.txt";
+  char szGrafoLeitura[] = "../txt/leitura.txt";
   pGrafo Tarefas = OP_LerGrafo(szGrafoLeitura); 
   ASSERT_TRUE(Tarefas->org != NULL); 
 
@@ -455,7 +422,7 @@ TEST(TestesIndividuais, TesteExclusaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -474,14 +441,14 @@ TEST(TestesIndividuais, TesteExclusaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 }
 
 TEST(TestesIndividuais, TesteEdicaoTarefa){ 
 
-  char szGrafoLeitura[20] = "leitura.txt"; 
+  char szGrafoLeitura[] = "../txt/leitura.txt"; 
   pGrafo Tarefas;
   try{
     Tarefas = OP_LerGrafo(szGrafoLeitura); 
@@ -499,7 +466,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -509,6 +476,12 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   }
   catch(...){ 
     ASSERT_TRUE(0); 
+  }
+  try{
+    OP_EditarId(Tarefas, 777, 999);
+  }
+  catch(...){
+    ASSERT_TRUE(0);
   }
 
 /* tenta editar o nome de uma tarefa inexistente */
@@ -521,7 +494,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -542,7 +515,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -564,7 +537,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -577,7 +550,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     //ASSERT_TRUE(0);
   }
 
@@ -599,7 +572,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -612,7 +585,7 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -630,7 +603,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
 
   pGrafo Tarefas;
 
-  char szGrafoLeitura[20] = "leitura.txt";
+  char szGrafoLeitura[] = "../txt/leitura.txt";
   try{
     Tarefas = OP_LerGrafo(szGrafoLeitura);
     ASSERT_TRUE(Tarefas->org != NULL);
@@ -648,7 +621,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
   catch(...){
     falha = true; 
   } 
-  if (falha == false){
+  if(!falha){
     ASSERT_TRUE(0);
   }
 
@@ -656,7 +629,7 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
  * sem pré-requisitos */
   try{
     int TempMin = OP_CalcularTempoMinExec(Tarefas, 2);
-    ASSERT_TRUE(TempMin == 9);
+    ASSERT_EQ(TempMin, 9);
   }
   catch(...){ 
     ASSERT_TRUE(0); 
@@ -666,11 +639,62 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
  * com pré-requisitos*/
   try{
     int TempMin = OP_CalcularTempoMinExec(Tarefas, 1);
-    //ASSERT_TRUE(TempMin == 20);
+    ASSERT_EQ(TempMin, 20);
   }
   catch(...){
     ASSERT_TRUE(0);
   }
+}
+
+TEST(TestesIndividuais, TesteAtualizarTempo){
+
+    pGrafo Tarefas;
+
+    char szGrafoLeitura[] = "../txt/leitura.txt";
+    try{
+        Tarefas = OP_LerGrafo(szGrafoLeitura);
+        ASSERT_TRUE(Tarefas->org != NULL);
+    }
+    catch(...){ 
+        ASSERT_TRUE(0);
+    }
+
+/* tenta atualizar para um tempo negativo */
+    bool falha = false;
+    try{
+        OP_AtualizarGrafo(Tarefas, -2);
+    }
+    catch(...){
+        falha = true;
+    }
+    if(!falha){
+        ASSERT_TRUE(0);
+    }
+
+/* tenta atualizar para um tempo positivo */
+    try{
+        OP_AtualizarGrafo(Tarefas, 8);
+    }
+    catch(...){
+        ASSERT_TRUE(0);
+    }   
+        tpElementoGrafo * pTarefa;
+        pTarefa = ED_EhIdExistente(Tarefas, 1);
+        ASSERT_FALSE(pTarefa->executado);
+        pTarefa = ED_EhIdExistente(Tarefas, 6);
+        ASSERT_TRUE(pTarefa->executado);
+
+/* tenta atualizar para o tempo 0 */
+    try{
+        OP_AtualizarGrafo(Tarefas, 0);
+    }
+    catch(...){
+        ASSERT_TRUE(0);
+    }
+        pTarefa = ED_EhIdExistente(Tarefas, 1);
+        ASSERT_FALSE(pTarefa->executado);
+        pTarefa = ED_EhIdExistente(Tarefas, 6);
+        ASSERT_FALSE(pTarefa->executado);    
 }
 
 int main(int argc, char** argv){ 
