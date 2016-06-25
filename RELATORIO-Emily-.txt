@@ -13,5 +13,5 @@ Data | Horas Trabalhadas	 | Tipo Tarefa		                                    |  
 12/6   1:26:05		           Rodar os CPPCheck e retirar warnings     Debug
 13/6   2:09:00		           Rodar os CPPCheck e retirar warnings     Debug
 21/6   1:15:00		           Especificar as funções                                   Correção do makefile para novo modelo e correção da função de atualização do tempo
-
+24/6   3:25:04                          Documentar com Doxygen                           Instalação do Doxygen, correção dos comentários fora do padrão e geração dos arquivos html
 
