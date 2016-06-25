@@ -1,0 +1,17 @@
+Data | Horas Trabalhadas	 | Tipo Tarefa		                                    |  Descrição da Tarefa Realizada
+
+31/5   0:41:00		           Especificar os módulos		                       Estrutura do makefile e diretórios
+05/6   1:54:12		           Codificar módulo                                            Assinatura das funções - renomeação das variáveis para o padrão
+06/6   0:43:00		           Codificar módulo                                            Continuação do trabalho do dia 05/6
+07/6   1:29:07		           Projetar                                                            Planejamento de funções e módulos
+08/6   2:23:55		           Projetar                                                            Planejamento e arquiterura do programa
+09/6   6:47:35		           Codificar módulo                                            Início de programação e implementação das bibliotecas
+10/6   0:52:00		           Codificar módulo                                            Atualização dos headers e correção dos comentários
+10/6   1:12:00		           Especificar as funções                                   Funções ligadas a cálculo do tempo de execução
+11/6   1:33:49		           Projetar                                                            Primeira versão das bibliotecas concluída
+12/6   1:27:00		           Projetar                                                            Correções das bibliotecas
+12/6   1:26:05		           Rodar os CPPCheck e retirar warnings     Debug
+13/6   2:09:00		           Rodar os CPPCheck e retirar warnings     Debug
+21/6   1:15:00		           Especificar as funções                                   Correção do makefile para novo modelo e correção da função de atualização do tempo
+
+

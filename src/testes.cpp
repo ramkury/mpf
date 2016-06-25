@@ -3,7 +3,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
- 
+
+/** @file testes.cpp
+*   @brief Arquivo de testes relativos a GrafoOp.cpp
+*   @sa GrafoOp.h
+*/
+
+/** @fn TEST(TestesIndividuais, TesteEscritaGrafo)
+*   @brief Testes relativos à escrita de um grafo em um .txt
+*/
+
 TEST(TestesIndividuais, TesteEscritaGrafo){ 
 /*testa a escrita para um .txt a partir  
  * de um grafo valido, depois compara o  
@@ -24,6 +33,10 @@ TEST(TestesIndividuais, TesteEscritaGrafo){
     ASSERT_TRUE(0);
   }
 }
+
+/** @fn TEST(TestesIndividuais, TesteDesalocacaoGrafo)
+*   @brief Testes relativos à desalocação de um grafo da memória
+*/
 
 TEST(TestesIndividuais, TesteDesalocacaoGrafo){ 
 /* testa desalocar um grafo inexistente */ 
@@ -90,6 +103,10 @@ TEST(TestesIndividuais, TesteDesalocacaoGrafo){
     }
 }
 
+/** @fn TEST(TestesIndividuais, TesteExclusaoGrafo)
+*   @brief Testes relativos à exclusão de um grafo
+*/
+
 TEST(TestesIndividuais, TesteExclusaoGrafo){
 /* tenta excluir um grafo inexistente, entao tenta 
  * excluir um grafo existente e verifica se ele foi 
@@ -121,6 +138,10 @@ TEST(TestesIndividuais, TesteExclusaoGrafo){
   }
 }
 
+/** @fn TEST(TestesIndividuais, TesteLeituraGrafo)
+*   @brief Testes relativos à leitura de um grafo para um .txt
+*/
+
 TEST(TestesIndividuais, TesteLeituraGrafo){
 /* testa a leitura de um .txt que contem 
  * um grafo consistente, depois testa
@@ -141,6 +162,10 @@ TEST(TestesIndividuais, TesteLeituraGrafo){
   }
 
 }
+
+/** @fn TEST(TestesIndividuais, TesteCriacaoRequisito)
+*   @brief Testes relativos à criação de um requisito em um grafo
+*/
 
 TEST(TestesIndividuais, TesteCriacaoRequisito){ 
 
@@ -230,6 +255,10 @@ TEST(TestesIndividuais, TesteCriacaoRequisito){
   } 
 }
 
+/** @fn TEST(TestesIndividuais, TesteExclusaoRequisito)
+*   @brief Testes relativos à exclusão de um requisito de um grafo
+*/
+
 TEST(TestesIndividuais, TesteExclusaoRequisito){ 
 
   char szGrafoLeitura[] = "../txt/leitura.txt"; 
@@ -287,6 +316,10 @@ TEST(TestesIndividuais, TesteExclusaoRequisito){
     ASSERT_TRUE(0); 
   } 
 }
+
+/** @fn TEST(TestesIndividuais, TesteCriacaoTarefa)
+*   @brief Testes relativos à criação de uma tarefa em um grafo
+*/
 
 TEST(TestesIndividuais, TesteCriacaoTarefa){ 
  
@@ -408,6 +441,10 @@ TEST(TestesIndividuais, TesteCriacaoTarefa){
   }
 }
 
+/** @fn TEST(TestesIndividuais, TesteExclusaoTarefa)
+*   @brief Testes relativos à exclusão de uma tarefa para um grafo
+*/
+
 TEST(TestesIndividuais, TesteExclusaoTarefa){ 
  
   char szGrafoLeitura[] = "../txt/leitura.txt";
@@ -445,6 +482,10 @@ TEST(TestesIndividuais, TesteExclusaoTarefa){
     ASSERT_TRUE(0);
   }
 }
+
+/** @fn TEST(TestesIndividuais, TesteEdicaoTarefa)
+*   @brief Testes relativos à edição de uma tarefa de um grafo
+*/
 
 TEST(TestesIndividuais, TesteEdicaoTarefa){ 
 
@@ -599,6 +640,10 @@ TEST(TestesIndividuais, TesteEdicaoTarefa){
   }
 }
 
+/** @fn TEST(TestesIndividuais, TesteTempoExecucaoTarefa)
+*   @brief Testes relativos ao tempo de execução de tarefas de um grafo
+*/
+
 TEST(TestesIndividuais, TesteTempoExecucaoTarefa){ 
 
   pGrafo Tarefas;
@@ -645,6 +690,10 @@ TEST(TestesIndividuais, TesteTempoExecucaoTarefa){
     ASSERT_TRUE(0);
   }
 }
+
+/** @fn TEST(TestesIndividuais, TesteAtualizarTempo)
+*   @brief Testes relativos às tarefas realizadas para cada tempo possível
+*/
 
 TEST(TestesIndividuais, TesteAtualizarTempo){
 

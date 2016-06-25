@@ -1,0 +1,11 @@
+Para gerar o executável, deve-se:
+1) Acessar via terminal o diretorio src
+2) Dentro do diretório src, digitar o comando make
+3) Para rodar o gerenciador, digitar o comando ./Gerenciador
+
+Para gerar o arquivo que roda os testes da biblioteca do gerenciador, deve-se:
+1) Acessar via terminal o diretorio src
+2) Dentro do diretório src, digitar o comando make teste
+3) Para rodar os testes, digitar o comando ./teste
+
+Os arquivos de documentação da biblioteca se encontram no diretório html dentro do diretório include. Para visualizar a documentação, basta abrir o arquivo index.html presente no diretório. E no diretório src também há um diretório html, nesse diretório encontra-se a documentação dos testes, para visualizar, basta abrir o  arquivo index.html.

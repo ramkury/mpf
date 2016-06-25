@@ -1,0 +1,12 @@
+Data | Horas Trabalhadas	 | Tipo Tarefa		                                        | Descrição da Tarefa Realizada
+
+08/6   4:41:08                         Estudar aulas e laboratórios relacionados    Estudando ferramentas (gui/padrões de codificação)
+08/6   1:50:40                         Codificar módulo                                                 Criando interface com ncurses
+10/6   0:44:30                         Codificar módulo                                                 Criando interface com ncurses
+12/6   5:22:21                         Codificar módulo                                                 Criando interface com ncurses
+13/6   2:09:00                         Rodar os CPPCheck e retirar warnings          Debug
+17/6   5:04:39                         Codificar módulo                                                Criando interface com ncurses
+18/6   3:43:49                         Rodar os CPPCheck e retirar warnings         Debug
+19/6   1:26:58                         Rodar os CPPCheck e retirar warnings         Debug
+19/6   3:28:33                         Codificar módulo                                                Criando interface com ncurses
+20/6   3:00:00                         Codificar módulo                                                Criando interface com ncurses

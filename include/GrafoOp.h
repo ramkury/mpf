@@ -56,7 +56,7 @@
 */
    void   OP_DeletarGrafo(pGrafo);
 
-/** @fn int  OP_CalcularTempMinExec(pGrafo, unsigned int)
+/** @fn int  OP_CalcularTempoMinExec(pGrafo, unsigned int)
 *   @brief Calcula o menor tempo necessário para a tarefa ser executada.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
@@ -73,7 +73,7 @@
 */
    void   OP_EditarId(pGrafo, unsigned int, unsigned int);	// verificar se novo id já não existe
 
-/** @fn void  OP_EditarNome(pGrafo, unsigned int, unsigned int)
+/** @fn void  OP_EditarNome(pGrafo, unsigned int, char *)
 *   @brief Edita o nome da tarefa.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
@@ -82,7 +82,7 @@
 */
    void   OP_EditarNome(pGrafo, unsigned int, char *);
 
-/** @fn void  OP_EditarEstadoExec(pGrafo, unsigned int, unsigned int)
+/** @fn void  OP_EditarEstadoExec(pGrafo, unsigned int, bool)
 *   @brief Edita o estado de execução da tarefa.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
@@ -91,7 +91,7 @@
 */
    void   OP_EditarEstadoExec(pGrafo, unsigned int, bool);
 
-/** @fn void  OP_EditarDuracao(pGrafo, unsigned int, unsigned int)
+/** @fn void  OP_EditarDuracao(pGrafo, unsigned int, int)
 *   @brief Edita o tempo de duração da execução da tarefa.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa
@@ -100,7 +100,7 @@
 */
    void   OP_EditarDuracao(pGrafo, unsigned int, int);
 
-/** @fn void  OP_EditarInicMin(pGrafo, unsigned int, unsigned int)
+/** @fn void  OP_EditarInicMin(pGrafo, unsigned int, int)
 *   @brief Edita o tempo mínio para a tarefa estar passível de ser executada.
 *   @param ponteiro para cabeça do grafo
 *   @param id da tarefa

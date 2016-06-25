@@ -10,10 +10,11 @@
 *   @sa GrafoOp.h
 */
 
-/** @typedef struct tpElementoReq tgElementoReq
+/** @typedef struct tgElementoReq tpElementoReq
 *   @brief Tipo que armazena as informações dos requisitos.
 *   @see tgElementoGrafo
 */
+
 /** @struct tgElementoReq
 *   @brief Estrutura que armazena as informações dos requisitos.
 *   @var unsigned int id: ID do requisito
@@ -51,18 +52,20 @@
 	   struct tgElementoGrafo * prox;
    }tpElementoGrafo;
 
-/** @typedef struct grafo * pGrafo
+/** @typedef struct pGrafo * grafo
 *   @brief Tipo ponteiro para cabeça do grafo.
+*   @see grafo
 */
+/** @struct grafo
+*   @brief Estrutura que armazena informações do grafo, estrutura da cabeça do grafo
+*   @var tpElementoGrafo *: ponteiro para a primeira tarefa
+*   @var int: tempo em que as tarefas do grafo se encontram
+*/
+
    typedef struct grafo{
        tpElementoGrafo * org;
        int tempo;
    }* pGrafo;
-
-/* ponteiro para lista de tarefas apenas por ID */
-   typedef tpElementoReq * pListaId;
-
-
 
 /** @fn pGrafo ED_CriarGrafo()
 *   @brief Aloca o espaço na memória para cabeça da estrutura.
@@ -178,7 +181,7 @@
 */
    void      ED_EditarDuracao(tpElementoGrafo *, int);
 
-/** @fn void ED_EditarInicMin(pGrafo, unsigned int, int)
+/** @fn void ED_EditarInicMin(tpElementoGrafo *, int)
 *   @brief Edita o tempo mínio para a tarefa estar passível de ser executada.
 *   @param ponteiro para tarefa
 *   @param novo tempo mínimo de espera até a tarefa poder ser executada

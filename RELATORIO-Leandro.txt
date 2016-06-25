@@ -1,0 +1,9 @@
+Data | Horas Trabalhadas	 | Tipo Tarefa		                      | Descrição da Tarefa Realizada
+
+08/6   1:02:05                          Redigir casos de teste                    Início do módulo testes.cpp
+09/6   5:33:20                          Redigir casos de teste                    Redigir casos de teste
+10/6   2:23:41                          Redigir casos de teste                    Redigir casos de teste
+11/6   1:01:40                          Redigir casos de teste                    Redigir casos de teste
+12/6   5:41:27                          Redigir casos de teste                    Casos de testes concluídos
+16/6   0:41:22                          Instrumentar via gcov                    Modificação dos testes para uso do gcov
+21/6   0:31:13                          Realizar os testes                            Testes realizados - cobertura de testes determinada
